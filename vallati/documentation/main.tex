@@ -9,6 +9,7 @@
 	urlcolor=blue,
 }
 \usepackage{listings}
+\usepackage[framed,autolinebreaks,useliterate]{mcode}
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage[justification=centering]{caption}
@@ -26,33 +27,99 @@
 	\large\textit{Ludovica Cocchella}\\
 	\large\textit{Rambod Rahmani}\\
 	\vspace{0.2cm}
-	\scriptsize{Msc. in Artificial Intelligence and Data Engineering}\\
+	\normalsize{Msc. in Artificial Intelligence and Data Engineering}\\
 	\vspace{1.0cm}
 	\today
 \end{center}
 \tableofcontents
 \section{Introduction}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquam justo eget nunc condimentum, eget iaculis justo venenatis. Aenean id tellus at velit vestibulum tempor nec eu mi. Maecenas lobortis eu mi quis condimentum. Maecenas mi ipsum, semper at felis in, consequat lobortis lorem. Ut imperdiet, ante mattis interdum tristique, orci leo feugiat lorem, facilisis volutpat diam tortor ac quam. Integer faucibus, odio sed consequat sagittis, nunc mi aliquet turpis, ut laoreet velit dolor non nisi. Vivamus vitae libero a est feugiat iaculis ac id mauris.\\
+The project focused on deploying Gnocchi - an open-source time series database - and Grafana - an open source analytics and monitoring solution - on the preexisting OpenStack installation. After deployment, some preliminary tests were carried out in order to make sure everything was running smoothly. Finally, Gnocchi metrics were created and populated using Stock Market data. Grafana was then used to visualize the data and extract useful statistics.\\
 \\
-Sed pretium lorem et rhoncus commodo. Nam pellentesque ex eu lectus interdum, quis condimentum risus pulvinar. Proin nisi neque, tempor in volutpat vel, interdum vel mi. Quisque tristique lorem sed pretium hendrerit. Nullam imperdiet congue nisl, a tempor arcu feugiat sit amet. Pellentesque quis sagittis tortor. Quisque nisi tortor, tempus et massa id, semper scelerisque nulla. Nullam pharetra porta aliquet. Fusce non quam egestas, mollis dolor ut, varius leo. Maecenas venenatis libero a est ultrices, eget hendrerit ipsum iaculis. Aenean aliquet purus a posuere luctus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ornare odio sapien, id rutrum sapien aliquam id.
-\section{Preliminary Solution Analysis}
-Proin iaculis, libero sit amet aliquet semper, lectus turpis sollicitudin tortor, vel dictum felis leo dignissim massa. Ut posuere, diam eu sagittis pretium, ligula dolor posuere augue, sed bibendum enim ex id neque. Fusce aliquam lorem ac turpis tristique maximus. Mauris sit amet facilisis erat. Praesent blandit urna porta, consequat ex sed, convallis est. Quisque nibh libero, iaculis quis ligula sed, porttitor accumsan est. Praesent pellentesque ultricies eros, nec condimentum est maximus ut. Etiam ut ultrices odio, a varius turpis.\\
-\\
-In ultrices porttitor velit id sollicitudin. Vivamus sodales at leo tempus congue. Nam ut pulvinar leo. Mauris ac risus quis nisi commodo auctor. Aenean viverra risus sit amet lorem placerat, congue volutpat tellus tincidunt. Ut suscipit mauris sed purus fermentum, in mattis risus venenatis. Aliquam pretium cursus enim sed interdum. Sed aliquet, lorem et rutrum efficitur, nunc justo pulvinar lorem, ut pulvinar odio nibh id diam. Aliquam ac maximus nulla. Proin vehicula ut urna vitae mollis. In hac habitasse platea dictumst. Vivamus porta condimentum posuere. In consequat justo nec aliquam efficitur. Suspendisse ac aliquam dolor, in pulvinar nisl. Vivamus arcu massa, egestas non nunc a, condimentum porttitor magna.
-\section{Final Project}
-Nam turpis lectus, consectetur id tortor ac, tristique sodales orci. Sed lacinia elit in tellus varius tempus. Praesent vitae erat sem. Nulla tempor placerat fermentum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse potenti. Suspendisse suscipit, erat non posuere vulputate, tortor neque luctus tortor, quis sollicitudin justo tellus in lacus. Donec vitae blandit quam. Nunc eu ante tincidunt, varius magna eu, lobortis mauris. Aenean consequat ut risus ac vulputate. Integer quis nisi vitae ex rhoncus vulputate. Mauris condimentum odio ut gravida efficitur.
-\subsection{Design}
+In what follows, the deployment procedures and the ad-hoc required configurations are detailed. Just for reference, the preexisting OpenStack installation consists of:
+\begin{lstlisting}[language=bash,numbers=left]
+172.16.3.218    Juju Controller
+172.16.3.238    Compute Node 0/OpenStack Controller
+172.16.3.177    Compute Node 1
+172.16.3.174    Compute Node 2
+172.16.3.227    Compute Node 3
+\end{lstlisting}
+The entire codebase is available at \url{https://github.com/lorytony/CloudComputing}.
+\section{Gnocchi Deployment}
+The Gnocchi database was deployed\footnote{\url{https://jaas.ai/gnocchi/37}} to compute node 0 in a container using Juju
+\begin{lstlisting}[language=bash]
+$ juju deploy --to lxd:0 cs:gnocchi
+$ juju deploy --to lxd:0 cs:memcached
+$ juju add-relation gnocchi mysql
+$ juju add-relation gnocchi memcached
+$ juju add-relation gnocchi keystone
+$ juju add-relation gnocchi ceph-mon
+\end{lstlisting}
+Right after deployment, some preliminary tests - creating a metric, pushing and reading measurements - were performed using Gnocchi REST API to check if the deployment was successful.
+\section{Grafana Deployment}
+Grafana was deployed\footnote{\url{https://jaas.ai/grafana/40}} to compute node 0 using Juju
+\begin{lstlisting}[language=bash]
+$ juju deploy cs:grafana
+\end{lstlisting}
+The choice was made not to deploy Grafana inside a container in order to be able to easily access its web interface and avoid further configurations related to port forwarding.
+\subsection{Gnocchi Datasource}
+The Gnocchi datasource was installed via grafana.net\footnote{\url{https://grafana.com/grafana/plugins/gnocchixyz-gnocchi-datasource}}:
+\begin{lstlisting}[language=bash]
+$ grafana-cli plugins install gnocchixyz-gnocchi-datasource
+$ systemctl restart grafana-server
+\end{lstlisting}
+\section{Fetching Stock Market Data}
+In order to fetch stock market data a Python3 script was written using the Yahoo! Finance\footnote{\url{https://finance.yahoo.com/}} API:
+\begin{lstlisting}[language=python,caption={fetch\_stock\_prices.py},numbers=left]
+#!/usr/bin/env python
+
+##
+# Retrieves last minute prices for the stock tickers defined in
+# tickers[]. The retrieved prices are pushed to the corresponding
+# stock metric in Gnocchi DB.
+##
+import json
+import datetime
+import yfinance as yf
+import urllib.request
+import dateutil.parser
+
+__author__ = "Leonardo Turchetti, Lorenzo Tonelli, Ludovica ..."
+__copyright__ = "Copyright (C) 2021 Leonardo Turchetti, Lorenzo ..."
+__license__ = "GPLv3"
+
+# keystone token
+keystone_token = "gAAAAABgo3ljkfH41aeXCgwj1Ois7rLwtji13hI3MbAXpJ..."
+
+# stock tickers to be retrieved
+tickers = ["ENEL.MI", "ISP.MI", "STLA", "ENI.MI", "RACE.MI", ...];
+tickers_metrics = ["faafee03-ec51-4929-b530-0452eef75464", ...]
+
+while True:
+  for i in range(len(tickers)):
+  # retrieve last minute price
+  msft = yf.Ticker(tickers[i])
+  print("Processing: " + msft.info['shortName'])
+  pricesDF = msft.history(period="1d", interval="1m")
+
+  # yfinance api timeouts might result in empty dataframes
+  if not pricesDF.empty:
+    # extract new highest price and timestamp
+    priceDateString = str(pricesDF.index[-1])
+    priceValue = pricesDF['High'][-1]
+    priceDate = dateutil.parser.isoparse(priceDateString)
+    print(priceDate.strftime("%Y-%m-%dT%H:%M:%S") + " - " + ...)
+
+    # push data to gnocchi
+    conditionsSetURL = "http://252.3.238.176:8041/v1/metric/" + ...
+    newConditions = [{"timestamp": priceDate.strftime( ...
+    params = json.dumps(newConditions).encode('utf8')
+    req = urllib.request.Request(conditionsSetURL, data=params, ...
+    response = urllib.request.urlopen(req)
+    print(response.read().decode('utf8'))
+\end{lstlisting}
+\subsection{Docker Container}
+\section{Grafana Dashboard}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquam justo eget nunc condimentum, eget iaculis justo venenatis. Aenean id tellus at velit vestibulum tempor nec eu mi. Maecenas lobortis eu mi quis condimentum. Maecenas mi ipsum, semper at felis in, consequat lobortis lorem. Ut imperdiet, ante mattis interdum tristique, orci leo feugiat lorem, facilisis volutpat diam tortor ac quam. Integer faucibus, odio sed consequat sagittis, nunc mi aliquet turpis, ut laoreet velit dolor non nisi. Vivamus vitae libero a est feugiat iaculis ac id mauris.
-\subsection{Validation}
-Sed pretium lorem et rhoncus commodo. Nam pellentesque ex eu lectus interdum, quis condimentum risus pulvinar. Proin nisi neque, tempor in volutpat vel, interdum vel mi. Quisque tristique lorem sed pretium hendrerit. Nullam imperdiet congue nisl, a tempor arcu feugiat sit amet. Pellentesque quis sagittis tortor. Quisque nisi tortor, tempus et massa id, semper scelerisque nulla. Nullam pharetra porta aliquet. Fusce non quam egestas, mollis dolor ut, varius leo. Maecenas venenatis libero a est ultrices, eget hendrerit ipsum iaculis. Aenean aliquet purus a posuere luctus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ornare odio sapien, id rutrum sapien aliquam id.
-\section{Conclusion}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquam justo eget nunc condimentum, eget iaculis justo venenatis. Aenean id tellus at velit vestibulum tempor nec eu mi. Maecenas lobortis eu mi quis condimentum. Maecenas mi ipsum, semper at felis in, consequat lobortis lorem. Ut imperdiet, ante mattis interdum tristique, orci leo feugiat lorem, facilisis volutpat diam tortor ac quam. Integer faucibus, odio sed consequat sagittis, nunc mi aliquet turpis, ut laoreet velit dolor non nisi. Vivamus vitae libero a est feugiat iaculis ac id mauris.\\
-\\
-Sed pretium lorem et rhoncus commodo. Nam pellentesque ex eu lectus interdum, quis condimentum risus pulvinar. Proin nisi neque, tempor in volutpat vel, interdum vel mi. Quisque tristique lorem sed pretium hendrerit. Nullam imperdiet congue nisl, a tempor arcu feugiat sit amet. Pellentesque quis sagittis tortor. Quisque nisi tortor, tempus et massa id, semper scelerisque nulla. Nullam pharetra porta aliquet. Fusce non quam egestas, mollis dolor ut, varius leo. Maecenas venenatis libero a est ultrices, eget hendrerit ipsum iaculis. Aenean aliquet purus a posuere luctus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ornare odio sapien, id rutrum sapien aliquam id.\\
-\\
-Proin iaculis, libero sit amet aliquet semper, lectus turpis sollicitudin tortor, vel dictum felis leo dignissim massa. Ut posuere, diam eu sagittis pretium, ligula dolor posuere augue, sed bibendum enim ex id neque. Fusce aliquam lorem ac turpis tristique maximus. Mauris sit amet facilisis erat. Praesent blandit urna porta, consequat ex sed, convallis est. Quisque nibh libero, iaculis quis ligula sed, porttitor accumsan est. Praesent pellentesque ultricies eros, nec condimentum est maximus ut. Etiam ut ultrices odio, a varius turpis.\\
-\\
-In ultrices porttitor velit id sollicitudin. Vivamus sodales at leo tempus congue. Nam ut pulvinar leo. Mauris ac risus quis nisi commodo auctor. Aenean viverra risus sit amet lorem placerat, congue volutpat tellus tincidunt. Ut suscipit mauris sed purus fermentum, in mattis risus venenatis. Aliquam pretium cursus enim sed interdum. Sed aliquet, lorem et rutrum efficitur, nunc justo pulvinar lorem, ut pulvinar odio nibh id diam. Aliquam ac maximus nulla. Proin vehicula ut urna vitae mollis. In hac habitasse platea dictumst. Vivamus porta condimentum posuere. In consequat justo nec aliquam efficitur. Suspendisse ac aliquam dolor, in pulvinar nisl. Vivamus arcu massa, egestas non nunc a, condimentum porttitor magna.\\
-\\
-Nam turpis lectus, consectetur id tortor ac, tristique sodales orci. Sed lacinia elit in tellus varius tempus. Praesent vitae erat sem. Nulla tempor placerat fermentum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse potenti. Suspendisse suscipit, erat non posuere vulputate, tortor neque luctus tortor, quis sollicitudin justo tellus in lacus. Donec vitae blandit quam. Nunc eu ante tincidunt, varius magna eu, lobortis mauris. Aenean consequat ut risus ac vulputate. Integer quis nisi vitae ex rhoncus vulputate. Mauris condimentum odio ut gravida efficitur. 
+\subsection{Stock Market data Statistics}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquam justo eget nunc condimentum, eget iaculis justo venenatis. Aenean id tellus at velit vestibulum tempor nec eu mi. Maecenas lobortis eu mi quis condimentum. Maecenas mi ipsum, semper at felis in, consequat lobortis lorem. Ut imperdiet, ante mattis interdum tristique, orci leo feugiat lorem, facilisis volutpat diam tortor ac quam. Integer faucibus, odio sed consequat sagittis, nunc mi aliquet turpis, ut laoreet velit dolor non nisi. Vivamus vitae libero a est feugiat iaculis ac id mauris.
 \end{document}
