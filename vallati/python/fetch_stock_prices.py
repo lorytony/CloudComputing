@@ -6,9 +6,12 @@
 ##
 import json
 import datetime
+import requests
+import functools
 import yfinance as yf
 import urllib.request
 import dateutil.parser
+from pytz import timezone
 
 __author__ = "Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella and Rambod Rahmani"
 __copyright__ = "Copyright (C) 2021 Leonardo Turchetti, Lorenzo Tunelli, Ludovica Cocchella and Rambod Rahmani"
@@ -40,9 +43,9 @@ tickers_metrics = ["faafee03-ec51-4929-b530-0452eef75464", \
 while True:
     for i in range(len(tickers)):
         # retrieve last minute price
-        msft = yf.Ticker(tickers[i])
-        print("Processing: " + msft.info['shortName'])
-        pricesDF = msft.history(period="1d", interval="1m")
+        ticker = yf.Ticker(tickers[i])
+        print("Processing: " + ticker.info['shortName'] + " [" + ticker.info["symbol"] + "]")
+        pricesDF = ticker.history(period="1d", interval="1m")
 
         # yfinance api timeouts might result in empty dataframes
         if not pricesDF.empty:
@@ -50,7 +53,8 @@ while True:
             priceDateString = str(pricesDF.index[-1])
             priceValue = pricesDF['High'][-1]
             priceDate = dateutil.parser.isoparse(priceDateString)
-            print(priceDate.strftime("%Y-%m-%dT%H:%M:%S") + " - " + str(priceValue))
+            priceDate = priceDate.astimezone(timezone('UTC'))
+            print(priceDate.strftime("%Y-%m-%dT%H:%M:%S %Z") + " - " + str(priceValue))
 
             # push data to gnocchi
             conditionsSetURL = "http://252.3.238.176:8041/v1/metric/" + tickers_metrics[i] + "/measures"
