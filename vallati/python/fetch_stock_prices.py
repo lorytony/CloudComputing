@@ -10,7 +10,7 @@ import yfinance as yf
 import urllib.request
 import dateutil.parser
 
-__author__ = "Leonardo Turchetti, Lorenzo Tunelli, Ludovica Cocchella and Rambod Rahmani"
+__author__ = "Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella and Rambod Rahmani"
 __copyright__ = "Copyright (C) 2021 Leonardo Turchetti, Lorenzo Tunelli, Ludovica Cocchella and Rambod Rahmani"
 __license__ = "GPLv3"
 
