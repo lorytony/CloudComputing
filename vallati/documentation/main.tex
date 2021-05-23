@@ -129,8 +129,8 @@ Finally, a new Gnocchi data source was added using the Grafana web interface:
 \noindent
 As it can be seen in the previous picture, Grafana needs a Keystone token as part of the Gnocchi data source configuration. In order to avoid having issues related to expiring authentication tokens, the default Keystone \texttt{token-expiration} ($3600$ $s$) parameter was changed to one month ($2628000$ $s$):
 \begin{lstlisting}[]
-root@namenode:~# juju config keystone token-expiration=2628000
-root@namenode:~# juju config keystone
+root@namenode:# juju config keystone token-expiration=2628000
+root@namenode:# juju config keystone
 ...
   token-expiration:
     default: 3600
@@ -141,7 +141,7 @@ root@namenode:~# juju config keystone
 ...
 \end{lstlisting}
 \begin{lstlisting}[]
-root@namenode:~# openstack token issue
+root@namenode:# openstack token issue
 +------------+-------------------------------------------------------------+
 | Field      | Value                                                       |
 +------------+-------------------------------------------------------------+
@@ -195,7 +195,7 @@ while True:
 The full commented source code of this listing can be found in the GitHub repository under \texttt{vallati/python/fetch\_stock\_prices.py}. For each of the stock market tickers defined, also the corresponding Gnocchi metric ID is defined. For each stock, the highest price of the current trading session is fetched and pushed to Gnocchi. All timestamps are converted to UTC timezone, as expected by Gnocchi.
 \subsection{Docker Container}
 A custom Docker container was deployed on the OpenStack controller vm in order to keep the Python script going:
-\begin{lstlisting}[numbers=left]
+\begin{lstlisting}[numbers=left, caption={Dockerfile}]
 # start from an official ubuntu image
 FROM ubuntu
 
@@ -209,6 +209,16 @@ ADD ./fetch_stock_prices.py /root/
 
 # at startup, run the following command
 CMD ["/usr/bin/python3", "/root/fetch_stock_prices.py"]
+\end{lstlisting}
+\begin{lstlisting}[]
+root@controller:# docker build -t fetch-stock-prices .
+
+root@controller:# docker run -d fetch-stock-prices
+3a38875721a9fed598b69848ce7a9da0166a1b92868720811f43b2b7ad0e4716
+
+root@controller:# docker ps -a
+CONTAINER ID  IMAGE               COMMAND                  CREATED
+3a38875721a9  fetch-stock-prices  "/usr/bin/python3 /r."   6 seconds
 \end{lstlisting}
 \section{Grafana Dashboard}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquam justo eget nunc condimentum, eget iaculis justo venenatis. Aenean id tellus at velit vestibulum tempor nec eu mi. Maecenas lobortis eu mi quis condimentum. Maecenas mi ipsum, semper at felis in, consequat lobortis lorem. Ut imperdiet, ante mattis interdum tristique, orci leo feugiat lorem, facilisis volutpat diam tortor ac quam. Integer faucibus, odio sed consequat sagittis, nunc mi aliquet turpis, ut laoreet velit dolor non nisi. Vivamus vitae libero a est feugiat iaculis ac id mauris.
