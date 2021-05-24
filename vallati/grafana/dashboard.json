@@ -1,0 +1,3927 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 2,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 9,
+      "panels": [],
+      "title": "NASDAQ Stock Exchange",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": 3,
+      "description": "GOOG stock price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 1
+      },
+      "hiddenSeries": false,
+      "id": 4,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "GOOG",
+          "metric_id": "06a298cc-aa96-47b0-ac3a-4242536dda0e",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Alphabet Inc. [GOOG]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:316",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:317",
+          "decimals": null,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "GOOG stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 1
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "GOOG Mean",
+          "metric_id": "06a298cc-aa96-47b0-ac3a-4242536dda0e",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "GOOG Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "GOOG stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 5
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "GOOG Std",
+          "metric_id": "06a298cc-aa96-47b0-ac3a-4242536dda0e",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "GOOG Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "ADSK stock price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 2,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "ADSK",
+          "metric_id": "1b089d84-b79b-4309-868e-0d22019e7d63",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Autodesk [ADSK]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "ADSK stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 9
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "ADSK Mean",
+          "metric_id": "1b089d84-b79b-4309-868e-0d22019e7d63",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "title": "ADSK Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "ADSK stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 13
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "ADSK Std",
+          "metric_id": "1b089d84-b79b-4309-868e-0d22019e7d63",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "ADSK Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "FOX stock price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 17
+      },
+      "hiddenSeries": false,
+      "id": 14,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "FOX",
+          "metric_id": "1f1f7244-bdda-456a-ad6f-7464c2c8645c",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Fox Corporation [FOX]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "FOX stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 17
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "FOX Mean",
+          "metric_id": "1f1f7244-bdda-456a-ad6f-7464c2c8645c",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "FOX Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "FOX stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 21
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "FOX Std",
+          "metric_id": "1f1f7244-bdda-456a-ad6f-7464c2c8645c",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "FOX Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "EBAY stock price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 25
+      },
+      "hiddenSeries": false,
+      "id": 17,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "EBAY",
+          "metric_id": "233cce21-8ad9-4b57-a02d-1d6a581a3fbf",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "eBay [EBAY]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "EBAY stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 25
+      },
+      "id": 29,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "EBAY Mean",
+          "metric_id": "233cce21-8ad9-4b57-a02d-1d6a581a3fbf",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "title": "EBAY Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "EBAY stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 29
+      },
+      "id": 30,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "EBAY Std",
+          "metric_id": "233cce21-8ad9-4b57-a02d-1d6a581a3fbf",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "EBAY Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "AMD stock price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 33
+      },
+      "hiddenSeries": false,
+      "id": 18,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "AMD",
+          "metric_id": "266d9a2f-4749-4a6b-9a7c-57315c1d331d",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Advanced Micro Devices [AMD]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "AMD stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 33
+      },
+      "id": 31,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "AMD Mean",
+          "metric_id": "266d9a2f-4749-4a6b-9a7c-57315c1d331d",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "title": "AMD Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "AMD stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 37
+      },
+      "id": 32,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "AMD Std",
+          "metric_id": "266d9a2f-4749-4a6b-9a7c-57315c1d331d",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "AMD Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "CHTR stock price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 41
+      },
+      "hiddenSeries": false,
+      "id": 19,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "CHTR",
+          "metric_id": "606f0e27-7a9c-446b-8d8e-32283eeb3524",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Charter Communications [CHTR]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "CHTR stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 41
+      },
+      "id": 33,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "CHTR Mean",
+          "metric_id": "606f0e27-7a9c-446b-8d8e-32283eeb3524",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "title": "CHTR Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "CHTR stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 45
+      },
+      "id": 34,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "CHTR Std",
+          "metric_id": "606f0e27-7a9c-446b-8d8e-32283eeb3524",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "CHTR Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "BKNG stock maximum price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 49
+      },
+      "hiddenSeries": false,
+      "id": 20,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "BKNG",
+          "metric_id": "64499075-fcc6-4a12-bf8f-8fc6e7b5d20d",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "The Priceline Group [BKNG]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "BKNG stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 49
+      },
+      "id": 35,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "BKNG Mean",
+          "metric_id": "64499075-fcc6-4a12-bf8f-8fc6e7b5d20d",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "title": "BKNG Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "BKNG stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 53
+      },
+      "id": 36,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "BKNG Std",
+          "metric_id": "64499075-fcc6-4a12-bf8f-8fc6e7b5d20d",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "BKNG Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "NFLX stock maximum price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 57
+      },
+      "hiddenSeries": false,
+      "id": 21,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "NFLX",
+          "metric_id": "8f7cd857-b88a-4eb8-9ad7-ad361dea71ce",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Netflix [NFLX]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "NFLX stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 57
+      },
+      "id": 37,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "NFLX Mean",
+          "metric_id": "8f7cd857-b88a-4eb8-9ad7-ad361dea71ce",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "title": "NFLX Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "NFLX stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 61
+      },
+      "id": 38,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "NFLX Std",
+          "metric_id": "8f7cd857-b88a-4eb8-9ad7-ad361dea71ce",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "NFLX Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "NVDA stock maximum price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 65
+      },
+      "hiddenSeries": false,
+      "id": 22,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "NVDA",
+          "metric_id": "955bf952-0f22-4a33-828b-e3046bcceb51",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "NVIDIA [NVDA]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "NVDA stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 65
+      },
+      "id": 39,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "NVDA Mean",
+          "metric_id": "955bf952-0f22-4a33-828b-e3046bcceb51",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "title": "NVDA Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "NVDA stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 69
+      },
+      "id": 40,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "NVDA Std",
+          "metric_id": "955bf952-0f22-4a33-828b-e3046bcceb51",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "NVDA Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "AMZN stock price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 73
+      },
+      "hiddenSeries": false,
+      "id": 23,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "AMZN",
+          "metric_id": "a34a5ffb-a616-4583-99df-73885cbac719",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Amazon.com [AMZN]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "AMZN stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 73
+      },
+      "id": 41,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "AMZN Mean",
+          "metric_id": "a34a5ffb-a616-4583-99df-73885cbac719",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "title": "AMZN Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "AMZN stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 77
+      },
+      "id": 42,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "AMZN Std",
+          "metric_id": "a34a5ffb-a616-4583-99df-73885cbac719",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "AMZN Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "FB stock price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 81
+      },
+      "hiddenSeries": false,
+      "id": 24,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "FB",
+          "metric_id": "b634fe45-2fec-47b5-8816-c0aa672e90af",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Facebook Inc. [FB]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "FB stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 81
+      },
+      "id": 43,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "FB Mean",
+          "metric_id": "b634fe45-2fec-47b5-8816-c0aa672e90af",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "title": "FB Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "CHTR stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 85
+      },
+      "id": 44,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "CHTR Std",
+          "metric_id": "606f0e27-7a9c-446b-8d8e-32283eeb3524",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "CHTR Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "PYPL stock maximum price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 89
+      },
+      "hiddenSeries": false,
+      "id": 25,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "PYPL",
+          "metric_id": "d4007b77-197a-4b17-b2f2-54ee97331ae0",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "PayPal [PYPL]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "PYPL stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 89
+      },
+      "id": 45,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "PYPL Mean",
+          "metric_id": "d4007b77-197a-4b17-b2f2-54ee97331ae0",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "title": "PYPL Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "PYPL stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 93
+      },
+      "id": 46,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "PYPL Std",
+          "metric_id": "d4007b77-197a-4b17-b2f2-54ee97331ae0",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "PYPL Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "ADBE stock maximum price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 97
+      },
+      "hiddenSeries": false,
+      "id": 26,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "ADBE",
+          "metric_id": "e2bf842c-f010-44a5-8b91-510c524f8eee",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Adobe [ADBE]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "ADBE stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 97
+      },
+      "id": 47,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "ADBE Mean",
+          "metric_id": "e2bf842c-f010-44a5-8b91-510c524f8eee",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "title": "ADBE Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "ADBE stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 101
+      },
+      "id": 49,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "ADBE Std",
+          "metric_id": "e2bf842c-f010-44a5-8b91-510c524f8eee",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "ADBE Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "MSFT stock maximum price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 105
+      },
+      "hiddenSeries": false,
+      "id": 27,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "MSFT",
+          "metric_id": "e7a19eaa-1590-4d1d-aa98-589a3a5862f8",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Microsoft [MSFT]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "MSFT stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 105
+      },
+      "id": 50,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "MSFT Mean",
+          "metric_id": "e7a19eaa-1590-4d1d-aa98-589a3a5862f8",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "title": "MSFT Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "MSFT stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 109
+      },
+      "id": 51,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "MSFT Std",
+          "metric_id": "e7a19eaa-1590-4d1d-aa98-589a3a5862f8",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "MSFT Std",
+      "type": "stat"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "decimals": null,
+      "description": "TSLA stock maximum price.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 0,
+        "y": 113
+      },
+      "hiddenSeries": false,
+      "id": 28,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "maxDataPoints": null,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aggregator": "max",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "TSLA",
+          "metric_id": "ed8da2ec-fc58-48af-92f8-b746cef30a2d",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "TSLA",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:48",
+          "decimals": 2,
+          "format": "currencyUSD",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:49",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "description": "TSLA stock price mean.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 113
+      },
+      "id": 52,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "mean",
+          "draw_missing_datapoint_as_zero": true,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "TSLA Mean",
+          "metric_id": "ed8da2ec-fc58-48af-92f8-b746cef30a2d",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "title": "TSLA Mean",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "TSLA stock price standard deviation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 6,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 18,
+        "y": 117
+      },
+      "id": 53,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "aggregator": "std",
+          "draw_missing_datapoint_as_zero": false,
+          "fill": 0,
+          "granularity": "60",
+          "groupby": "",
+          "label": "TSLA Std",
+          "metric_id": "ed8da2ec-fc58-48af-92f8-b746cef30a2d",
+          "metric_name": "none found",
+          "needed_overlap": 0,
+          "operations": "",
+          "queryMode": "metric",
+          "reaggregator": "none",
+          "refId": "A",
+          "resource_search": "",
+          "resource_type": "generic"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "TSLA Std",
+      "type": "stat"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 27,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Stock Market",
+  "uid": "9GGydi3Gk",
+  "version": 48
+}
