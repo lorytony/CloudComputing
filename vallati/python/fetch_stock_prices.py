@@ -14,7 +14,7 @@ __copyright__ = "Copyright (C) 2021 Leonardo Turchetti, Lorenzo Tunelli, Ludovic
 __license__ = "GPLv3"
 
 # pyEX engine
-c = pyEX.Client("Tpk_165f42bb152b43df82921c1d713bad5d", version='sandbox')
+c = pyEX.Client("pk_e58014e8a6bd415d8af6e459f2353eb5")
 
 # keystone token
 keystone_token = "gAAAAABgqo4EBJerAKtAUGHMUyE93A7Vnoy3XUXZ7lLOGLXki_qXc0rCX6JqFXwFbbv_VrsMud-VEjyGu5KLQDp5NEZpHIExnVhdx6BIVkRAPGdIqKyRV5KJ4ycOLiuwjVkZGurhmvHPCfL1WO6veSc0Gk3D0AsuYPX-dAwGEQbPCN23o5dC9nk"
@@ -38,20 +38,24 @@ tickers_metrics = ["a34a5ffb-a616-4583-99df-73885cbac719", \
                 "233cce21-8ad9-4b57-a02d-1d6a581a3fbf", \
                 "1f1f7244-bdda-456a-ad6f-7464c2c8645c"]
 
-while True:
-    for i in range(len(tickers)):
-        # retrieve current UTC timestamp
-        timestamp = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+try:
+    while True:
+        for i in range(len(tickers)):
+            # retrieve current UTC timestamp
+            timestamp = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 
-        # retrieve last second stock price
-        price = c.price(tickers[i])
-        print(timestamp + " | " + tickers[i] + " - " + str(price))
+            # retrieve last second stock price
+            price = c.price(tickers[i])
+            print(timestamp + " | " + tickers[i] + " - " + str(price))
 
-        # check if the retrieved price is valid
-        if (price > 0.0):
-            # push data to gnocchi
-            conditionsSetURL = "http://252.3.238.176:8041/v1/metric/" + tickers_metrics[i] + "/measures"
-            newConditions = [{"timestamp": timestamp, "value": str(price)}]
-            params = json.dumps(newConditions).encode('utf8')
-            req = urllib.request.Request(conditionsSetURL, data=params, headers={'content-type': 'application/json', 'X-AUTH-TOKEN': keystone_token})
-            response = urllib.request.urlopen(req)
+            # check if the retrieved price is valid
+            if (price > 0.0):
+                # push data to gnocchi
+                conditionsSetURL = "http://252.3.238.176:8041/v1/metric/" + tickers_metrics[i] + "/measures"
+                newConditions = [{"timestamp": timestamp, "value": str(price)}]
+                params = json.dumps(newConditions).encode('utf8')
+                req = urllib.request.Request(conditionsSetURL, data=params, headers={'content-type': 'application/json', 'X-AUTH-TOKEN': keystone_token})
+                urllib.request.urlopen(req)
+except Exception:
+    print("Exception fetching stock market data. Ignoring.")
+    pass
