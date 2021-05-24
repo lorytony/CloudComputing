@@ -1,13 +1,13 @@
-# start from an official ubuntu image
-FROM ubuntu
-
-# specify the command to be run inside the container at installation
-RUN apt-get update && apt-get install -y python3 python3-pip
-RUN python3 -m pip install --no-cache-dir --upgrade pip && \
-    python3 -m pip install --no-cache-dir gnocchiclient yfinance pandas
-
-# add some file to the image from the host
-ADD ../docker/fetch_stock_prices.py /root/
-
-# at startup, run the following command
+# start from an official ubuntu image                                                                                                                                                                                                       
+FROM ubuntu                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                            
+# specify the command to be run inside the container at installation                                                                                                                                                                        
+RUN apt-get update && apt-get install -y python3 python3-pip                                                                                                                                                                                
+RUN python3 -m pip install --no-cache-dir --upgrade pip && \                                                                                                                                                                                
+    python3 -m pip install --no-cache-dir gnocchiclient pyEX pandas                                                                                                                                                                         
+                                                                                                                                                                                                                                            
+# add some file to the image from the host                                                                                                                                                                                                  
+ADD ../docker/fetch_stock_prices.py /root/                                                                                                                                                                                                          
+                                                                                                                                                                                                                                            
+# at startup, run the following command                                                                                                                                                                                                     
 CMD ["/usr/bin/python3", "/root/fetch_stock_prices.py"]
