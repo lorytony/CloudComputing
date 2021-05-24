@@ -75,18 +75,18 @@ $ gnocchi --endpoint http://172.16.3.238:8041 metric list
 \end{lstlisting}
 Right after deployment, some preliminary tests - creating a metric, pushing and reading measurements - were performed using Gnocchi REST API to check if the deployment was successful.
 \subsection{Metrics}
-Gnocchi is based on the concept of metrics which contain measurements: as we intend to store stock market data, a new metric was created for each of the stocks we intend to monitor. The top $15$ stocks of the Italian Stock Exchange were selected.\\
+Gnocchi is based on the concept of metrics which contain measurements: as we intend to store stock market data, a new metric was created for each of the stocks we intend to monitor. The top $15$ stocks of the NASDAQ Stock Exchange were selected.\\
 \\
 The official Gnocchi Python client was used to create the required metrics:
 \begin{lstlisting}[]
-$ gnocchi metric create --archive-policy-name high "ATL.MI"
-$ gnocchi metric create --archive-policy-name high "UCG.MI"
-$ gnocchi metric create --archive-policy-name high "EXO.MI"
-$ gnocchi metric create --archive-policy-name high "ISP.MI"
-$ gnocchi metric create --archive-policy-name high "G.MI"
+$ gnocchi metric create --archive-policy-name high "GOOG"
+$ gnocchi metric create --archive-policy-name high "ADSK"
+$ gnocchi metric create --archive-policy-name high "FOX"
+$ gnocchi metric create --archive-policy-name high "EBAY"
+$ gnocchi metric create --archive-policy-name high "AMD"
 ...
 \end{lstlisting}
-The default \texttt{archive-policy} used is \texttt{high}. By default, $4$ archive policies are created. The name both describes the storage space and CPU usage needs.
+The default \texttt{archive-policy} used is \texttt{high}. By default, $4$ archive policies are available. The name both describes the storage space and CPU usage needs.
 \begin{itemize}[noitemsep]
     \item low
     \begin{itemize}
@@ -106,7 +106,7 @@ The default \texttt{archive-policy} used is \texttt{high}. By default, $4$ archi
 \end{itemize}
 The archive policies define how the metrics are aggregated and how long they are stored. Each archive policy definition is expressed as the number of points over a timespan. Each archive policy also defines which aggregation methods will be used. The default is set to \texttt{default\_aggregation\_methods} which is by default set to \texttt{mean}, \texttt{min}, \texttt{max}, \texttt{sum}, \texttt{std}, \texttt{count}.\\
 \\
-Both the archive policy and the granularity entirely depends on your use case. For our intended usage, the default \texttt{archive-policy} \texttt{high} and the default aggregations methods were considered more than enough. Be aware that the more definitions you set in an archive policy, the more CPU it will consume.
+Both the archive policy and the granularity entirely depend on your use case. For our intended usage, the default \texttt{archive-policy} \texttt{high} and the default aggregations methods were considered more than enough. Be aware that the more definitions you set in an archive policy, the more CPU it will consume.
 \section{Grafana Deployment}
 Grafana is a multi-platform open source analytics and interactive visualization web application. It provides charts, graphs, and alerts for the web when connected to supported data sources. It is expandable through a plug-in system. End users can create complex monitoring dashboards using interactive query builders.\\
 \\
@@ -152,49 +152,46 @@ root@namenode:# openstack token issue
 +------------+-------------------------------------------------------------+
 \end{lstlisting}
 \section{Fetching Stock Market Data}
-In order to fetch stock market data a Python3 script was written using the Yahoo! Finance\footnote{\url{https://finance.yahoo.com/}} API:
+In order to fetch stock market data a Python3 script was written initially using the Yahoo! Finance\footnote{\url{https://finance.yahoo.com/}} API. However, being a freely available service, it was not reliable enough in order to be able provide real time data. Therefore, a new implementation was developed using IEX Cloud\footnote{\url{https://iexcloud.io}} with an educational license.
 \begin{lstlisting}[language=python,caption={fetch\_stock\_prices.py},numbers=left]
 #!/usr/bin/env python
 
+import pyEX
 import json
-import datetime
-import requests
-import functools
-import yfinance as yf
 import urllib.request
-import dateutil.parser
-from pytz import timezone
+from datetime import datetime
 
-keystone_token = "gAAAAABgo3ljkfH41aeXCgwj1Ois7rLwtji13hI3MbAXpJ..."
+# pyEX engine
+c = pyEX.Client("pk_e58014e8a6bd415d8af6e459f2353eb5")
 
-tickers = ["ENEL.MI", "ISP.MI", "STLA", "ENI.MI", "RACE.MI", ...];
-tickers_metrics = ["faafee03-ec51-4929-b530-0452eef75464", ...]
+# keystone token
+keystone_token = "gAAAAABgqo4EBJerAKtAUGHMUyE93A7Vnoy3XUXZ7lLOGLXki_qXc..."
 
-while True:
-  for i in range(len(tickers)):
-    msft = yf.Ticker(tickers[i])
-    print("Processing: " + msft.info['shortName'])
-    pricesDF = msft.history(period="1d", interval="1m")
+# stock tickers to be retrieved
+tickers = ["AMZN", "GOOG", "BKNG", "CHTR", "NVDA", "TSLA", "NFLX", ...];
+tickers_metrics = ["a34a5ffb-a616-4583-99df-73885cbac719", \ ...]
 
-    # yfinance api timeouts might result in empty dataframes
-    if not pricesDF.empty:
-      priceDateString = str(pricesDF.index[-1])
-      priceValue = pricesDF['High'][-1]
-      priceDate = dateutil.parser.isoparse(priceDateString)
-      priceDate = priceDate.astimezone(timezone('UTC'))
-      print(priceDate.strftime("%Y-%m-%dT%H:%M:%S") + " - " + ...)
+try:
+    while True:
+        for i in range(len(tickers)):
+            timestamp = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+            price = c.price(tickers[i])
+            print(timestamp + " | " + tickers[i] + " - " + str(price))
 
-      # push data to gnocchi
-      conditionsSetURL = "http://252.3.238.176:8041/v1/metric/" + ...
-      newConditions = [{"timestamp": priceDate.strftime( ...
-      params = json.dumps(newConditions).encode('utf8')
-      req = urllib.request.Request(conditionsSetURL, data=params, ...
-      response = urllib.request.urlopen(req)
-      print(response.read().decode('utf8'))
+            if (price > 0.0):
+                # push data to gnocchi
+                conditionsSetURL = "http://252.3.238.176:8041/v1/metric/" ...
+                newConditions = [{"timestamp": timestamp, "value": ...
+                params = json.dumps(newConditions).encode('utf8')
+                req = urllib.request.Request(conditionsSetURL, data= ...
+                urllib.request.urlopen(req)
+except Exception:
+    print("Exception fetching stock market data. Ignoring.")
+    pass
 \end{lstlisting}
-The full commented source code of this listing can be found in the GitHub repository under \texttt{vallati/python/fetch\_stock\_prices.py}. For each of the stock market tickers defined, also the corresponding Gnocchi metric ID is defined. For each stock, the highest price of the current trading session is fetched and pushed to Gnocchi. All timestamps are converted to UTC timezone, as expected by Gnocchi.
+The full commented source code of this listing can be found in the GitHub repository under \texttt{vallati/python/fetch\_stock\_prices.py}. For each of the stock market tickers defined, also the corresponding Gnocchi metric ID is defined. For each stock, the market price of the current trading session is fetched and pushed to Gnocchi. All timestamps are converted to UTC timezone, as expected by Gnocchi.
 \subsection{Docker Container}
-A custom Docker container was deployed on the OpenStack controller vm in order to keep the Python script going:
+A custom Docker container was deployed on the OpenStack controller VM in order to keep the Python script going:
 \begin{lstlisting}[numbers=left, caption={Dockerfile}]
 # start from an official ubuntu image
 FROM ubuntu
@@ -202,7 +199,7 @@ FROM ubuntu
 # specify the command to be run inside the container at installation
 RUN apt-get update && apt-get install -y python3 python3-pip
 RUN python3 -m pip install --no-cache-dir --upgrade pip && \
-    python3 -m pip install --no-cache-dir gnocchiclient yfinance pandas
+    python3 -m pip install --no-cache-dir gnocchiclient pyEX pandas
 
 # add some file to the image from the host
 ADD ./fetch_stock_prices.py /root/
@@ -221,13 +218,24 @@ CONTAINER ID  IMAGE               COMMAND                  CREATED
 3a38875721a9  fetch-stock-prices  "/usr/bin/python3 /r."   6 seconds
 \end{lstlisting}
 \section{Grafana Dashboard}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquam justo eget nunc condimentum, eget iaculis justo venenatis. Aenean id tellus at velit vestibulum tempor nec eu mi. Maecenas lobortis eu mi quis condimentum. Maecenas mi ipsum, semper at felis in, consequat lobortis lorem. Ut imperdiet, ante mattis interdum tristique, orci leo feugiat lorem, facilisis volutpat diam tortor ac quam. Integer faucibus, odio sed consequat sagittis, nunc mi aliquet turpis, ut laoreet velit dolor non nisi. Vivamus vitae libero a est feugiat iaculis ac id mauris.
-\subsection{Stock Market data Statistics}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquam justo eget nunc condimentum, eget iaculis justo venenatis. Aenean id tellus at velit vestibulum tempor nec eu mi. Maecenas lobortis eu mi quis condimentum. Maecenas mi ipsum, semper at felis in, consequat lobortis lorem. Ut imperdiet, ante mattis interdum tristique, orci leo feugiat lorem, facilisis volutpat diam tortor ac quam. Integer faucibus, odio sed consequat sagittis, nunc mi aliquet turpis, ut laoreet velit dolor non nisi. Vivamus vitae libero a est feugiat iaculis ac id mauris.
+A dashboard is a set of one or more panels organized and arranged into one or more rows. Grafana ships with a variety of Panels. Grafana makes it easy to construct the right queries, and customize the display properties so that you can create the perfect dashboard for your need. Each panel can interact with data from any configured Grafana Data Source. A dashboard in Grafana is represented by a JSON object, which stores metadata of its dashboard. Dashboard metadata includes dashboard properties, metadata from panels, template variables, panel queries, etc.
+\subsection{Stock Market Dashboard}
+A custom dashboard was developed using Grafana web interface.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.41]{imgs/grafana-dashboard.PNG}
+\end{figure}
+\noindent
+For each stock, the following information is displayed:
+\begin{itemize}
+    \item stock price time series plot;
+    \item stock average price;
+    \item stock price standard deviation: this is a statistical measure of market volatility, measuring how widely prices are dispersed from the average price.
+\end{itemize}
 \section{Future work}
 The current deployment can be improved pushing it to the extreme as follows:
 \begin{itemize}
-    \item create a new Gnocchi archive policy with a granularity of $1$ minute over a timespan of $1$ year;
-    \item run a dedicated docker container for each of the stocks we want to monitor to overcome as much as possible Yahoo! Finance API response delays.
+    \item create a new Gnocchi archive policy with a granularity of $1$ second over a timespan of $1$ year;
+    \item run a dedicated docker container for each of the stocks we want to monitor in order to be able to fetch data as fast as possible.
 \end{itemize}
 \end{document}
