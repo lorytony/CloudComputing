@@ -38,9 +38,9 @@ tickers_metrics = ["a34a5ffb-a616-4583-99df-73885cbac719", \
                 "233cce21-8ad9-4b57-a02d-1d6a581a3fbf", \
                 "1f1f7244-bdda-456a-ad6f-7464c2c8645c"]
 
-try:
-    while True:
-        for i in range(len(tickers)):
+while True:
+    for i in range(len(tickers)):
+        try:
             # retrieve current UTC timestamp
             timestamp = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 
@@ -56,6 +56,6 @@ try:
                 params = json.dumps(newConditions).encode('utf8')
                 req = urllib.request.Request(conditionsSetURL, data=params, headers={'content-type': 'application/json', 'X-AUTH-TOKEN': keystone_token})
                 urllib.request.urlopen(req)
-except Exception:
-    print("Exception fetching stock market data. Ignoring.")
-    pass
+        except Exception:
+            print("Exception occurred while fetching stock market data. Ignoring.")
+            pass
