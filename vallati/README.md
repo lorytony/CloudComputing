@@ -5,7 +5,9 @@ OpenStack installation. After deployment, some preliminary tests were carried
 out in order to make sure everything was running smoothly. Finally, Gnocchi metrics
 were created and populated using stock market data. Grafana was then used to
 visualize the data and extract useful statistics.
+
 ![Grafana Dashboard](documentation/imgs/grafana-dashboard.jpg)
+
 # Prerequisites
 ```bash
 python3 -m pip install gnocchiclient pyEX numpy pandas

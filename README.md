@@ -8,6 +8,7 @@ OpenStack installation. After deployment, some preliminary tests were carried
 out in order to make sure everything was running smoothly. Finally, Gnocchi metrics
 were created and populated using stock market data. Grafana was then used to
 visualize the data and extract useful statistics.
+
 ![Grafana Dashboard](vallati/documentation/imgs/grafana-dashboard.jpg)
 
 # PageRank
