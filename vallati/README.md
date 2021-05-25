@@ -8,5 +8,5 @@ visualize the data and extract useful statistics.
 ![Grafana Dashboard](documentation/imgs/grafana-dashboard.jpg)
 # Prerequisites
 ```bash
-python3 -m pip install gnocchiclient yfinance pandas
+python3 -m pip install gnocchiclient pyEX numpy pandas
 ```
