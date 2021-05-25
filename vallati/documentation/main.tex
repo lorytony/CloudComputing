@@ -152,7 +152,9 @@ root@namenode:# openstack token issue
 +------------+-------------------------------------------------------------+
 \end{lstlisting}
 \section{Fetching Stock Market Data}
-In order to fetch stock market data a Python3 script was written initially using the Yahoo! Finance\footnote{\url{https://finance.yahoo.com/}} API. However, being a freely available service, it was not reliable enough in order to be able provide real time data. Therefore, a new implementation was developed using IEX Cloud\footnote{\url{https://iexcloud.io}} with an educational license.
+In order to fetch stock market data a Python3 script was written initially using the Yahoo! Finance\footnote{\url{https://finance.yahoo.com/}} API. However, being a freely available service, it was not reliable enough in order to be able provide real time data.\\
+\\
+Therefore, a new implementation was developed using IEX Cloud\footnote{\url{https://iexcloud.io}} with an educational license. Thanks to this new provider, we were able to fetch real time stock market data as well as leverage upon the \texttt{sandbox} functionality they provide in order to obtain randomized realistic test data when the stock market is closed (regular trading hours for the U.S. stock market, including the New York Stock Exchange (NYSE) and the Nasdaq Stock Market (Nasdaq), are 9:30 a.m. to 4 p.m. Eastern time on weekdays).
 \begin{lstlisting}[language=python,caption={fetch\_stock\_prices.py},numbers=left]
 #!/usr/bin/env python
 
@@ -223,7 +225,7 @@ A dashboard is a set of one or more panels organized and arranged into one or mo
 A custom dashboard was developed using Grafana web interface.
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.41]{imgs/grafana-dashboard.PNG}
+    \includegraphics[scale=0.245]{imgs/grafana-dashboard.jpg}
 \end{figure}
 \noindent
 For each stock, the following information is displayed:
@@ -236,6 +238,19 @@ For each stock, the following information is displayed:
 The current deployment can be improved pushing it to the extreme as follows:
 \begin{itemize}
     \item create a new Gnocchi archive policy with a granularity of $1$ second over a timespan of $1$ year;
-    \item run a dedicated docker container for each of the stocks we want to monitor in order to be able to fetch data as fast as possible.
+    \item create custom Gnocchi aggregation methods;
+    \item for each stock store the open, high, low, close and volume values;
+    \item run a dedicated docker container for each of the stocks we want to monitor in order to be able to fetch data as fast as possible;
+    \item for each stock, compute and display the candlestick chart and useful statistics using a Grafana dashboard.
 \end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.41]{imgs/ohlc-explained.png}
+    \caption{Open-High-Low-Close Chart Explained}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.585]{imgs/candlestickchart.png}
+    \caption{Candlestick Chart}
+\end{figure}
 \end{document}
