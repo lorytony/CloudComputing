@@ -56,6 +56,7 @@ while True:
                 params = json.dumps(newConditions).encode('utf8')
                 req = urllib.request.Request(conditionsSetURL, data=params, headers={'content-type': 'application/json', 'X-AUTH-TOKEN': keystone_token})
                 urllib.request.urlopen(req)
-        except Exception:
+        except Exception as ex:
+            print(ex)
             print("Exception occurred while fetching stock market data. Ignoring.")
             pass
