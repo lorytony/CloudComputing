@@ -7,7 +7,14 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.mapreduce.Mapper;
 
 /**
- * Parses each line of the input .xml file extracting the content of the
+ * This mapper is used by the job in charge of building the hyperlink graph. It
+ * parses each line of the input .xml file extracting the content of the <title>
+ * and <text> tags. The content of the <text> tag is further processed in order
+ * to detect outlinks formatted as [[page name]].
+ * The output uses the <title> tag content as the output key whereas the outlinks
+ * detected inside the <text> tag are emitted as output value.
+ * 
+ * @author Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella, Rambod Rahmani.
  */
 public class GraphBuilderMapper extends Mapper<LongWritable, Text, Text, Text>
 {
@@ -15,7 +22,7 @@ public class GraphBuilderMapper extends Mapper<LongWritable, Text, Text, Text>
 	private final Text outputValue = new Text();
 
 	@Override
-	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException
+	public void map(final LongWritable key, final Text value, final Context context) throws IOException, InterruptedException
 	{
 		final String page = value.toString();
 

@@ -20,6 +20,8 @@ import org.apache.hadoop.fs.FSDataInputStream;
 
 /**
  * Hadoop Driver.
+ * 
+ * @author Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella, Rambod Rahmani.
  */
 public class Driver 
 {

@@ -8,6 +8,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 /**
  * 
+ * @author Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella, Rambod Rahmani.
  */
 public class PageRankMapper extends Mapper<LongWritable, Text, Text, Text>
 {

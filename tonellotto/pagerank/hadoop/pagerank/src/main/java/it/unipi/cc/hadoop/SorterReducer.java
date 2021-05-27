@@ -8,6 +8,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 /**
  *
+ * @author Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella, Rambod Rahmani.
  */
 public class SorterReducer extends Reducer<DoubleWritable, Text, Text, DoubleWritable>
 {

@@ -7,7 +7,11 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.mapreduce.Reducer;
 
 /**
+ * This reducer is used by the job in charge of counting the number of nodes of the
+ * hyperlink graph. In the reduce() method, the 1 values outputted by the mapper are
+ * simply summed to obtain the final count of the nodes in the hyperlink graph.
  *
+ * @author Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella, Rambod Rahmani.
  */
 public class NodesCounterReducer extends Reducer<Text, IntWritable, Text, IntWritable>
 {

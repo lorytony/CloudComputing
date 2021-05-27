@@ -9,6 +9,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 /**
  * 
+ * @author Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella, Rambod Rahmani.
  */
 public class SorterMapper extends Mapper<LongWritable, Text, DoubleWritable, Text>
 {

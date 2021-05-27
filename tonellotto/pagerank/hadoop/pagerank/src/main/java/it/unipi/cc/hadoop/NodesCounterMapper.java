@@ -9,7 +9,12 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.mapreduce.Mapper;
 
 /**
+ * This mapper is used by the job in charge of counting the number of nodes of the
+ * hyperlink graph. The map() method is called once for each of the lines in the
+ * input .xml file. Whenever a <title> tag is found, this is a node. The fixed
+ * key N is outputted with the value 1 whenever a node is correctly parsed.
  * 
+ * @author Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella, Rambod Rahmani.
  */
 public class NodesCounterMapper extends Mapper<LongWritable, Text, Text, IntWritable>
 {
