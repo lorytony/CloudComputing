@@ -38,9 +38,6 @@ import org.apache.hadoop.io.WritableComparator;
  */
 public class Driver 
 {
-	private final static double alfa = 0.15;
-	private final static int iterations = 10;
-
 	/**
 	 * 
 	 */
@@ -133,7 +130,7 @@ public class Driver
 		{
 			Configuration conf =  context.getConfiguration();
 			int N = Integer.parseInt(conf.get("N"));
-			final double initialPageRank = alfa*((double)1/N);
+			final double initialPageRank = (double)1/N;
 
 			boolean firstLink = true;
 			String output = initialPageRank + "\t";
@@ -196,7 +193,11 @@ public class Driver
 		@Override
 		public void reduce(final Text key, final Iterable<Text> values, final Context context) throws IOException, InterruptedException
 		{
-			double sum = 0.0;
+			Configuration conf =  context.getConfiguration();
+			final int N = Integer.parseInt(conf.get("N"));
+			final float alfa = Float.parseFloat(conf.get("ALFA"));
+
+			double sum = alfa*((double)1/N);
 			String links = "";
 
 			for (final Text value : values) {
@@ -271,12 +272,22 @@ public class Driver
 	 */
     public static void main(final String[] args) throws Exception
     {
+    	// jobs common configuration
 		final Configuration conf = new Configuration();
         final String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
-		if (otherArgs.length != 4+iterations) {
-        	System.err.println("Usage: PageRank <input> <output-NodesCounter> <output-GraphBuilder> <output-PageRank> <output-Sorter>");
+
+        // retrieve iterations number from command line args
+        final int iterations = Integer.parseInt(otherArgs[0]);
+        final float alfa = Float.parseFloat(otherArgs[1]);
+
+        // check if the given command line arguments are enough
+        if (otherArgs.length != 6+iterations) {
+        	System.err.println("Usage: PageRank <iterations> <alfa> <input> <output-NodesCounter> <output-GraphBuilder> <output-PageRank> <output-Sorter>");
         	System.exit(1);
         }
+
+        // set alfa value in the configuration for the jobs
+		conf.set("ALFA", String.valueOf(alfa));
 
 		// job0: counts the graph nodes starting from the .xml input file
     	final Job job0 = Job.getInstance(conf, "PageRank-NodesCounter");
@@ -292,15 +303,15 @@ public class Driver
 		job0.setInputFormatClass(TextInputFormat.class);
 
 		// add input/output files
-		FileInputFormat.addInputPath(job0, new Path(otherArgs[0]));
-		FileOutputFormat.setOutputPath(job0, new Path(otherArgs[1]));
+		FileInputFormat.addInputPath(job0, new Path(otherArgs[2]));
+		FileOutputFormat.setOutputPath(job0, new Path(otherArgs[3]));
 
 		// wait for job0 completion
 		job0.waitForCompletion(true);
 
 		// read nodes count from job0 output
 		FileSystem fs = FileSystem.get(conf);
-		Path inFile = new Path(otherArgs[1] + "/part-r-00000");
+		Path inFile = new Path(otherArgs[3] + "/part-r-00000");
 		if (!fs.exists(inFile)) {
 			System.out.println("Input file not found");
 			throw new IOException("Input file not found");
@@ -327,8 +338,8 @@ public class Driver
 		job1.setInputFormatClass(TextInputFormat.class);
 
 		// add input/output files
-		FileInputFormat.addInputPath(job1, new Path(otherArgs[0]));
-		FileOutputFormat.setOutputPath(job1, new Path(otherArgs[2]));
+		FileInputFormat.addInputPath(job1, new Path(otherArgs[2]));
+		FileOutputFormat.setOutputPath(job1, new Path(otherArgs[4]));
 
 		// wait for job1 completion
 		job1.waitForCompletion(true);
@@ -348,8 +359,8 @@ public class Driver
 			job2.setInputFormatClass(TextInputFormat.class);
 
 			// add input/output files
-			FileInputFormat.addInputPath(job2, new Path(otherArgs[2 + i]));
-			FileOutputFormat.setOutputPath(job2, new Path(otherArgs[3 + i]));
+			FileInputFormat.addInputPath(job2, new Path(otherArgs[4 + i]));
+			FileOutputFormat.setOutputPath(job2, new Path(otherArgs[5 + i]));
 
 			// wait for job2 completion
 			job2.waitForCompletion(true);
@@ -373,8 +384,8 @@ public class Driver
 		job3.setInputFormatClass(TextInputFormat.class);
 
 		// add input/output files
-		FileInputFormat.addInputPath(job3, new Path(otherArgs[2+iterations]));
-		FileOutputFormat.setOutputPath(job3, new Path(otherArgs[3+iterations]));
+		FileInputFormat.addInputPath(job3, new Path(otherArgs[4 + iterations]));
+		FileOutputFormat.setOutputPath(job3, new Path(otherArgs[5 + iterations]));
 
 		// sort PageRank value in descending order
 		job3.setSortComparatorClass(DescendingDoubleWritableComparator.class);
