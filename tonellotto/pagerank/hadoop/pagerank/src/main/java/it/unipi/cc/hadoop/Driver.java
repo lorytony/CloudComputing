@@ -38,10 +38,10 @@ public class Driver
 
         // retrieve iterations number from command line args
         final int iterations = Integer.parseInt(otherArgs[0]);
-        final float alfa = Float.parseFloat(otherArgs[1]);
+        final double alfa = Double.parseDouble(otherArgs[1]);
 
         // check if the given command line arguments are enough
-        if (otherArgs.length != 6+iterations) {
+        if (otherArgs.length != 6 + iterations) {
         	System.err.println("Usage: PageRank <iterations> <alfa> <input> <output-NodesCounter> <output-GraphBuilder> <output-PageRank> <output-Sorter>");
         	System.exit(1);
         }
@@ -150,7 +150,7 @@ public class Driver
 		// sort PageRank value in descending order
 		job3.setSortComparatorClass(DescendingDoubleWritableComparator.class);
 
-		// wait for job3 completion
-		job3.waitForCompletion(true);
+		// wait for job3 completion and exit
+		System.exit(job3.waitForCompletion(true) ? 0 : 1);
     }
 }
