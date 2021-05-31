@@ -17,11 +17,11 @@ public class PageRankReducer extends Reducer<Text, Text, Text, Text>
 	private int N;
 
 	@Override
-    protected void setup(final Context context) throws IOException, InterruptedException {
-        final Configuration conf =  context.getConfiguration();
-        alfa = Double.parseDouble(conf.get("ALFA"));
+	protected void setup(final Context context) throws IOException, InterruptedException {
+		final Configuration conf =  context.getConfiguration();
+		alfa = Double.parseDouble(conf.get("ALFA"));
 		N = Integer.parseInt(conf.get("N"));
-    }
+	}
 
 	@Override
 	public void reduce(final Text key, final Iterable<Text> values, final Context context) throws IOException, InterruptedException

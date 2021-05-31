@@ -17,11 +17,11 @@ public class GraphBuilderReducer extends Reducer<Text, Text, Text, Text>
 	private int N;
 
 	@Override
-    protected void setup(final Context context) throws IOException, InterruptedException {
-        final Configuration conf = context.getConfiguration();
-        N = Integer.parseInt(conf.get("N"));
-        initialPageRank = (double)1/N;
-    }
+	protected void setup(final Context context) throws IOException, InterruptedException {
+		final Configuration conf = context.getConfiguration();
+		N = Integer.parseInt(conf.get("N"));
+		initialPageRank = (double)1/N;
+	}
 
 	@Override
 	public void reduce(final Text key, final Iterable<Text> values, final Context context) throws IOException, InterruptedException

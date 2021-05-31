@@ -12,10 +12,10 @@ import org.apache.hadoop.mapreduce.Reducer;
  */
 public class SorterReducer extends Reducer<DoubleWritable, Text, Text, DoubleWritable>
 {
-    public void reduce(final DoubleWritable key, final Iterable<Text> values, final Context context) throws IOException, InterruptedException
+	public void reduce(final DoubleWritable key, final Iterable<Text> values, final Context context) throws IOException, InterruptedException
 	{
 		for (final Text title : values) {
 			context.write(title, key);
 		}
-    }
+	}
 }

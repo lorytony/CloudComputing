@@ -30,27 +30,27 @@ public class Driver
 	 * 
 	 * @param args command line arguments.
 	 */
-    public static void main(final String[] args) throws Exception
-    {
-    	// jobs common configuration
+	public static void main(final String[] args) throws Exception
+	{
+		// jobs common configuration
 		final Configuration conf = new Configuration();
-        final String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
+		final String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
 
-        // retrieve iterations number from command line args
-        final int iterations = Integer.parseInt(otherArgs[0]);
-        final double alfa = Double.parseDouble(otherArgs[1]);
+		// retrieve iterations number from command line args
+		final int iterations = Integer.parseInt(otherArgs[0]);
+		final double alfa = Double.parseDouble(otherArgs[1]);
 
-        // check if the given command line arguments are enough
-        if (otherArgs.length != 3) {
-        	System.err.println("Usage: PageRank <iterations> <alfa> <input>");
-        	System.exit(1);
-        }
+		// check if the given command line arguments are enough
+		if (otherArgs.length != 3) {
+			System.err.println("Usage: PageRank <iterations> <alfa> <input>");
+			System.exit(1);
+		}
 
-        // set alfa value in the configuration for the jobs
+		// set alfa value in the configuration for the jobs
 		conf.set("ALFA", String.valueOf(alfa));
 
 		// job0: counts the graph nodes starting from the .xml input file
-    	final Job job0 = Job.getInstance(conf, "PageRank-NodesCounter");
+		final Job job0 = Job.getInstance(conf, "PageRank-NodesCounter");
 		job0.setJarByClass(Driver.class);
 		job0.setMapperClass(NodesCounterMapper.class);
 		job0.setReducerClass(NodesCounterReducer.class);
@@ -85,7 +85,7 @@ public class Driver
 		conf.set("N", nodesCount[1].trim());
 
 		// job1: builds the graph starting from the .xml input file
-    	final Job job1 = Job.getInstance(conf, "PageRank-GraphBuilder");
+		final Job job1 = Job.getInstance(conf, "PageRank-GraphBuilder");
 		job1.setJarByClass(Driver.class);
 		job1.setMapperClass(GraphBuilderMapper.class);
 		job1.setReducerClass(GraphBuilderReducer.class);
@@ -106,7 +106,7 @@ public class Driver
 
 		for (int i = 0; i < iterations; i++) {
 			// job2: builds the graph starting from the .xml input file
-	    	final Job job2 = Job.getInstance(conf, "PageRank-PageRank");
+			final Job job2 = Job.getInstance(conf, "PageRank-PageRank");
 			job2.setJarByClass(Driver.class);
 			job2.setMapperClass(PageRankMapper.class);
 			job2.setReducerClass(PageRankReducer.class);
@@ -127,7 +127,7 @@ public class Driver
 		}
 
 		// job3: builds the graph starting from the .xml input file
-    	final Job job3 = Job.getInstance(conf, "PageRank-Sorter");
+		final Job job3 = Job.getInstance(conf, "PageRank-Sorter");
 		job3.setJarByClass(Driver.class);
 		job3.setMapperClass(SorterMapper.class);
 		job3.setReducerClass(SorterReducer.class);
@@ -156,12 +156,12 @@ public class Driver
 			System.out.println("\n-----------------------");
 			System.out.println("OUTPUT FILES");
 			System.out.println("-----------------------");
-	        System.out.println("job0 output: output-0");
-	        System.out.println("job1 output: output-1");
-	        for (int i = 0; i < iterations; i++) {
-	        	System.out.println("job2 output: output-" + String.valueOf(2 + i));
-	        }
-	        System.out.println("job3 output: output-" + String.valueOf(2 + iterations));
+			System.out.println("job0 output: output-0");
+			System.out.println("job1 output: output-1");
+			for (int i = 0; i < iterations; i++) {
+				System.out.println("job2 output: output-" + String.valueOf(2 + i));
+			}
+			System.out.println("job3 output: output-" + String.valueOf(2 + iterations));
 		}
-    }
+	}
 }
