@@ -38,11 +38,11 @@ public class Driver
 
         // retrieve iterations number from command line args
         final int iterations = Integer.parseInt(otherArgs[0]);
-        final float alfa = Float.parseFloat(otherArgs[1]);
+        final double alfa = Double.parseDouble(otherArgs[1]);
 
         // check if the given command line arguments are enough
-        if (otherArgs.length != 6+iterations) {
-        	System.err.println("Usage: PageRank <iterations> <alfa> <input> <output-NodesCounter> <output-GraphBuilder> <output-PageRank> <output-Sorter>");
+        if (otherArgs.length != 3) {
+        	System.err.println("Usage: PageRank <iterations> <alfa> <input>");
         	System.exit(1);
         }
 
@@ -64,17 +64,17 @@ public class Driver
 
 		// add input/output files
 		FileInputFormat.addInputPath(job0, new Path(otherArgs[2]));
-		FileOutputFormat.setOutputPath(job0, new Path(otherArgs[3]));
+		FileOutputFormat.setOutputPath(job0, new Path("output-0"));
 
 		// wait for job0 completion
 		job0.waitForCompletion(true);
 
 		// read nodes count from job0 output
 		FileSystem fs = FileSystem.get(conf);
-		Path inFile = new Path(otherArgs[3] + "/part-r-00000");
+		Path inFile = new Path("output-0/part-r-00000");
 		if (!fs.exists(inFile)) {
-			System.out.println("Input file not found");
-			throw new IOException("Input file not found");
+			System.err.println("Input file not found.");
+			throw new IOException("Input file not found.");
 		}
 		// open and read from file
 		FSDataInputStream inputStream = fs.open(inFile);
@@ -99,7 +99,7 @@ public class Driver
 
 		// add input/output files
 		FileInputFormat.addInputPath(job1, new Path(otherArgs[2]));
-		FileOutputFormat.setOutputPath(job1, new Path(otherArgs[4]));
+		FileOutputFormat.setOutputPath(job1, new Path("output-1"));
 
 		// wait for job1 completion
 		job1.waitForCompletion(true);
@@ -119,8 +119,8 @@ public class Driver
 			job2.setInputFormatClass(TextInputFormat.class);
 
 			// add input/output files
-			FileInputFormat.addInputPath(job2, new Path(otherArgs[4 + i]));
-			FileOutputFormat.setOutputPath(job2, new Path(otherArgs[5 + i]));
+			FileInputFormat.addInputPath(job2, new Path("output-" + String.valueOf(1 + i) + "/part-r-00000"));
+			FileOutputFormat.setOutputPath(job2, new Path("output-" + String.valueOf(2 + i)));
 
 			// wait for job2 completion
 			job2.waitForCompletion(true);
@@ -144,13 +144,24 @@ public class Driver
 		job3.setInputFormatClass(TextInputFormat.class);
 
 		// add input/output files
-		FileInputFormat.addInputPath(job3, new Path(otherArgs[4 + iterations]));
-		FileOutputFormat.setOutputPath(job3, new Path(otherArgs[5 + iterations]));
+		FileInputFormat.addInputPath(job3, new Path("output-" + String.valueOf(1 + iterations) + "/part-r-00000"));
+		FileOutputFormat.setOutputPath(job3, new Path("output-" + String.valueOf(2 + iterations)));
 
 		// sort PageRank value in descending order
 		job3.setSortComparatorClass(DescendingDoubleWritableComparator.class);
 
-		// wait for job3 completion
-		job3.waitForCompletion(true);
+		// wait for job3 completion and exit
+		if (job3.waitForCompletion(true)) {
+			// print output file names for the user
+			System.out.println("\n-----------------------");
+			System.out.println("OUTPUT FILES");
+			System.out.println("-----------------------");
+	        System.out.println("job0 output: output-0");
+	        System.out.println("job1 output: output-1");
+	        for (int i = 0; i < iterations; i++) {
+	        	System.out.println("job2 output: output-" + String.valueOf(2 + i));
+	        }
+	        System.out.println("job3 output: output-" + String.valueOf(2 + iterations));
+		}
     }
 }

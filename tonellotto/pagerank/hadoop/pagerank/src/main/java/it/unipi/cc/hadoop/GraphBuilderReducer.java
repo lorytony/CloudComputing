@@ -34,7 +34,6 @@ public class GraphBuilderReducer extends Reducer<Text, Text, Text, Text>
 			firstLink = false;
 		}
 		outputValue.set(output);
-		
 		context.write(key, outputValue);
 	}
 }
