@@ -41,13 +41,8 @@ public class Driver
         final double alfa = Double.parseDouble(otherArgs[1]);
 
         // check if the given command line arguments are enough
-<<<<<<< HEAD
         if (otherArgs.length != 3) {
         	System.err.println("Usage: PageRank <iterations> <alfa> <input>");
-=======
-        if (otherArgs.length != 6 + iterations) {
-        	System.err.println("Usage: PageRank <iterations> <alfa> <input> <output-NodesCounter> <output-GraphBuilder> <output-PageRank> <output-Sorter>");
->>>>>>> b3eb378421608db4e5bbbf8976fa78d80dd82ed6
         	System.exit(1);
         }
 
@@ -156,7 +151,6 @@ public class Driver
 		job3.setSortComparatorClass(DescendingDoubleWritableComparator.class);
 
 		// wait for job3 completion and exit
-<<<<<<< HEAD
 		if (job3.waitForCompletion(true)) {
 			// print output file names for the user
 			System.out.println("\n-----------------------");
@@ -169,8 +163,5 @@ public class Driver
 	        }
 	        System.out.println("job3 output: output-" + String.valueOf(2 + iterations));
 		}
-=======
-		System.exit(job3.waitForCompletion(true) ? 0 : 1);
->>>>>>> b3eb378421608db4e5bbbf8976fa78d80dd82ed6
     }
 }
