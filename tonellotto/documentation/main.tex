@@ -1,5 +1,6 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage{float}
+\usepackage{textcomp}
 \usepackage{wrapfig}
 \usepackage{amsmath}
 \usepackage{graphicx}
@@ -7,6 +8,7 @@
 \usepackage{enumitem}
 \usepackage[dvipsnames]{xcolor}
 \usepackage[linktoc=none]{hyperref}
+\usepackage[ruled, linesnumbered]{algorithm2e}
 \usepackage[justification=centering]{caption}
 \usepackage[a4paper, portrait, margin=1.2in]{geometry}
 \usepackage[framed, autolinebreaks, useliterate]{mcode}
@@ -17,6 +19,7 @@
 	urlcolor=blue,
 }
 \lstset{aboveskip=\medskipamount}
+\DontPrintSemicolon
 \begin{document}
 \begin{center}
 	\Large\textbf{PageRank}\\
@@ -40,13 +43,14 @@ The importance of a web page is an inherently subjective matter, which depends o
 \\
 The project focused on designing a MapReduce algorithm (using pseudocode) to implement the PageRank (using both Hadoop and Spark). Initially, a pseudocode implementation and the design assumptions are presented. The successive sections focus on the implementation details using both Hadoop and Spark. Finally, the validation results obtained using both a realistic and a synthetic dataset are provided.\\
 \\
-The entire codebase is available at \url{https://github.com/lorytony/CloudComputing}.
+The entire codebase is available at \url{https://github.com/lorytony/CloudComputing}.\\
+\\
+You can access the VM with the source code ready to be executed using \texttt{ssh hadoop@172.16.3.218} providing the password \texttt{sicurezza34!}. The project files can be found under \texttt{$\sim$/PageRank/hadoop} and \texttt{$\sim$/PageRank/spark}.
 \section{PageRank}
-PageRank\footnote{The PageRank Citation Ranking: Bringing Order to the Web - January 29, 1998 - \url{http://ilpubs.stanford.edu:8090/422/1/1999-66.pdf}} is a measure of web page quality based on the structure of the hyperlink graph. Although it is only one of thousands of features that is taken into account in Google's search algorithm, it is perhaps one of the best known and most studied.\\
+PageRank\footnote{The PageRank Citation Ranking: Bringing Order to the Web - January 29, 1998 - \url{http://ilpubs.stanford.edu:8090/422/1/1999-66.pdf}} is a measure of web page quality based on the structure of the hyperlink graph. Although it is only one of thousands of features that is taken into account in Google's search algorithm, it is perhaps one of the best known and most studied. Every page has some number of forward links (out-edges) and backlinks (in-edges). We can never know whether we have found all the backlinks of a particular page but if we have downloaded it, we know all of its forward links at that time.\\
 \\
 The reason why PageRank is so interesting is that there are many cases where simple citation counting does not correspond to our common sense notion of importance. For example, if a web page has a link off the Yahoo home page, it may be just one link but it is a very important one. This page should be ranked higher than many pages with more links but from obscure places. PageRank is an attempt to see how good an approximation to "importance" can be obtained just from the link structure.\\
 \\
-Every page has some number of forward links (out-edges) and backlinks (in-edges). We can never know whether we have found all the backlinks of a particular page but if we have downloaded it, we know all of its forward links at that time.\\
 The previous example models the so called "Propagation of Ranking Through Links": a page has high rank if the sum of the ranks of its backlinks is high. This covers both the case when a page has many backlinks and when a page has a few highly ranked backlinks.\\
 \\
 Formally, given
@@ -62,13 +66,13 @@ The definition of PageRank above has another intuitive basis in random walks on 
 \subsection{Computation}
 PageRank can be computed either iteratively or algebraically. Using the iterative method, at $t = 0$, an initial probability distribution is assumed
 $$PR(p_i, 0) = \frac{1}{N}$$
-where $N$ is the total number of pages, and $p_i$;$0$ is page $i$ at time $0$. At each time step, the computation, as detailed above, yields
-$$PR(p_i, t + 1) = \alpha \frac{1}{N} + (1 - \alpha) \sum_{p_j \in L(p_i)}\frac{PR(p_j, t)}{C(p_j)}$$
+where $N$ is the total number of pages, and ($p_i$, $0$) is page $i$ at time $0$. At each time step, the computation, as detailed above, yields
+$$PR(p_i, t + 1) = \alpha \frac{1}{N} + (1 - \alpha) \sum_{p_j \in L(p_i)}\frac{PR(p_j, t)}{C(p_j)} .$$
 \subsection{Implementation Assumptions}
 In the presented implementation, some assumptions were made.\\
 \\
 Firstly, 
-Nowadays, a colossal $4.2$ billion pages exist on the Web, spread across $8.2$ million web servers. No crawling operations were taken into account. In what follows, the assumption was made that the the inputs to the program are pages from the Simple English Wikipedia. We will be using a pre-processed version of the Simple Wikipedia corpus in which the pages are stored in an XML format. Each page of Wikipedia is represented in XML as follows:
+nowadays a colossal $4.2$ billion pages exist on the Web, spread across $8.2$ million web servers. No crawling operations were taken into account. In what follows, the assumption was made that the the inputs to the program are pages from the Simple English Wikipedia. We will be using a pre-processed version of the Simple Wikipedia corpus in which the pages are stored in an XML format. Each page of Wikipedia is represented in XML as follows:
 \begin{lstlisting}[language=xml]
 <title>web page name</title>
 ...
@@ -78,11 +82,99 @@ Nowadays, a colossal $4.2$ billion pages exist on the Web, spread across $8.2$ m
     ...
 </revision>
 \end{lstlisting}
-The pages have been "flattened" to be represented on a single line. The body text of the page also has all newlines converted to spaces to ensure it stays on one line in this representation. This makes it easy to use the default \texttt{InputFormat}, which performs one \texttt{map()} call per line of each file it reads. Links to other Wikipedia articles are of the form \texttt{[[page name]]}. Starting from this input file, first the hyperlink graph is constructed and then the PageRank is computed for each node.
+The pages have been "flattened" to be represented on a single line. The body text of the page also has all newlines converted to spaces to ensure it stays on one line in this representation. This makes it easy to use the default \texttt{InputFormat}, which performs one \texttt{map()} call per line of each file it reads. Links to other Wikipedia articles are of the form \texttt{[[page name]]}. Starting from this input file, first the hyperlink graph is constructed and then the PageRank is computed for each node.\\
+\\
+The "jump factor" $\alpha$ and the number of iterations to be performed are expected as inputs. As a matter of fact, the proposed implementation does not rely upon the iterations convergence measured as the difference between consecutive PageRank values as stopping criteria. But instead a fixed number of iterations are performed.
 \subsection{Pseudocode Implementation}
+The solution we came up with is made up of multiple stages: each of them can also be thought of as a MapReduce job.
+\subsubsection*{Stage 0: counts the number of nodes of the hyperlink graph}
+\begin{algorithm}[H]
+\KwData{XML input data}
+\KwResult{Number of nodes of the hyperlink graph \textit{N}}
+\textbf{class} \textsc{Mapper}\;
+\Indp\textbf{method} \textsc{Map}(lineid \textit{k}, line \textit{l})\;
+\Indp\textbf{if} \textless title\textgreater * \textless /title\textgreater \ $\in$ \textit{l} \textbf{then}\;
+\Indp\textsc{Emit}(\textit{N}, count 1)\;
+\Indm\textbf{end}\;
+\Indm\Indm\;
+\textbf{class} \textsc{Reducer}\;
+\Indp\textbf{method} \textsc{Reduce}(term \textit{t}, counts [$c_1$, $c_2$, \dots])\;
+\Indp\textit{sum} $\leftarrow$ $0$\;
+\textbf{for all} count \textit{c} $\in$ counts [$c_1$, $c_2$, \dots] \textbf{do}\;
+\Indp\textit{sum} $\leftarrow$ sum + $c$\;
+\Indm\textsc{Emit}(term \textit{t}, count \textit{sum})
+\end{algorithm}
+\subsubsection*{Stage 1: builds the hyperlink graph}
+\begin{algorithm}[H]
+\KwData{XML input data}
+\KwResult{Number of nodes of the hyperlink graph \textit{N}}
+\textbf{class} \textsc{Mapper}\;
+\Indp\textbf{method} \textsc{Map}(docid \textit{a}, doc \textit{d})\;
+\Indp\textbf{for all} term \textit{t} $\in$ doc \textit{d} \textbf{do}\;
+\Indm\textsc{Emit}(term \textit{t}, count 1)\;
+\;
+\Indm\textbf{class} \textsc{Reducer}\;
+\Indp\textbf{method} \textsc{Reduce}(term \textit{t}, counts [$c_1$, $c_2$, \dots])\;
+\Indp\textit{sum} $\leftarrow$ $0$\;
+\textbf{for all} count \textit{c} $\in$ counts [$c_1$, $c_2$, \dots] \textbf{do}\;
+\Indp\textit{sum} $\leftarrow$ sum + $c$\;
+\Indm\textsc{Emit}(term \textit{t}, count \textit{sum})
+\end{algorithm}
+\subsubsection*{Stage 2}
+\begin{algorithm}[H]
+\KwData{XML input data}
+\KwResult{Number of nodes of the hyperlink graph \textit{N}}
+\textbf{class} \textsc{Mapper}\;
+\Indp\textbf{method} \textsc{Map}(docid \textit{a}, doc \textit{d})\;
+\Indp\textbf{for all} term \textit{t} $\in$ doc \textit{d} \textbf{do}\;
+\Indm\textsc{Emit}(term \textit{t}, count 1)\;
+\;
+\Indm\textbf{class} \textsc{Reducer}\;
+\Indp\textbf{method} \textsc{Reduce}(term \textit{t}, counts [$c_1$, $c_2$, \dots])\;
+\Indp\textit{sum} $\leftarrow$ $0$\;
+\textbf{for all} count \textit{c} $\in$ counts [$c_1$, $c_2$, \dots] \textbf{do}\;
+\Indp\textit{sum} $\leftarrow$ sum + $c$\;
+\Indm\textsc{Emit}(term \textit{t}, count \textit{sum})
+\end{algorithm}
+\subsubsection*{Stage 3}
+\begin{algorithm}[H]
+\KwData{XML input data}
+\KwResult{Number of nodes of the hyperlink graph \textit{N}}
+\textbf{class} \textsc{Mapper}\;
+\Indp\textbf{method} \textsc{Map}(docid \textit{a}, doc \textit{d})\;
+\Indp\textbf{for all} term \textit{t} $\in$ doc \textit{d} \textbf{do}\;
+\Indm\textsc{Emit}(term \textit{t}, count 1)\;
+\;
+\Indm\textbf{class} \textsc{Reducer}\;
+\Indp\textbf{method} \textsc{Reduce}(term \textit{t}, counts [$c_1$, $c_2$, \dots])\;
+\Indp\textit{sum} $\leftarrow$ $0$\;
+\textbf{for all} count \textit{c} $\in$ counts [$c_1$, $c_2$, \dots] \textbf{do}\;
+\Indp\textit{sum} $\leftarrow$ sum + $c$\;
+\Indm\textsc{Emit}(term \textit{t}, count \textit{sum})
+\end{algorithm}
 \section{PageRank Implementation using Hadoop}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquam justo eget nunc condimentum, eget iaculis justo venenatis. Aenean id tellus at velit vestibulum tempor nec eu mi. Maecenas lobortis eu mi quis condimentum. Maecenas mi ipsum, semper at felis in, consequat lobortis lorem. Ut imperdiet, ante mattis interdum tristique, orci leo feugiat lorem, facilisis volutpat diam tortor ac quam. Integer faucibus, odio sed consequat sagittis, nunc mi aliquet turpis, ut laoreet velit dolor non nisi. Vivamus vitae libero a est feugiat iaculis ac id mauris.
-\subsection{Custom \texttt{WritableComparable} object}
+The PageRank implementation using Hadoop was divided into $4$ MapReduce Jobs:
+\begin{itemize}
+    \item \texttt{job0}: in charge of counting the number of nodes in the hyperlink graph; it parses each line of the input \texttt{.xml} file extracting the content of the \texttt{<title>} tag and counting how many of such tags are found;
+    \item \texttt{job1}: it parses each line of the input \texttt{.xml} file extracting the content of the \texttt{<title>} and \texttt{<text>} tags; the content of the \texttt{<text>} tag is further processed in order to detect outlinks formatted as \texttt{[[page name]]}. For each node, it also assigns the initial PageRank computed as $\frac{1}{N}$;
+    \item \texttt{job2}: for each node, it calculates the PageRank contribution for each out-edges without losing the structure of the graph. These contributions are used to calculate a new PageRank value for each page; this job is scheduled a number of times equal to the value of the command line argument \texttt{iterations};
+    \item \texttt{job3}: after the iterations of \texttt{job2} are over, this job is in charge of sorting in descending order the final results;
+\end{itemize}
+The Java implementation consists of the following classes:
+\begin{itemize}
+    \item \texttt{Driver.java}: this class implements the Hadoop driver;
+    \item \texttt{NodesCounterMapper.java}: the \texttt{map()} method is called once for each of the lines in the input \texttt{.xml} file; whenever a \texttt{<title>} tag is found, this is a node; the fixed key \texttt{N} is outputted with the values aggregated by an intermediate In-Mapper combiner;
+    \item \texttt{NodesCounterReducer.java}: 
+    this reducer is used by \texttt{job0}; the \texttt{reduce()} method, simply sums the values outputted by the mapper to obtain the final count of the nodes in the hyperlink graph;
+    \item \texttt{GraphBuilderMapper.java}: mapper for \texttt{job1}; the \texttt{map()} function is called once for each of the lines inside the input \texttt{.xml} file to extract the content of the \texttt{<title>} and the \texttt{<text>} tags; it emits as key the page name and as value the list of out-edges separated by '\texttt{]]}'; the '\texttt{]]}' separator was choosen becuase it is the only combinations of chars we are guarateed not to find within the \texttt{[[page name]]};
+    \item \texttt{GraphBuilderReducer.java}: the \texttt{reduce()} method computes the initial PageRank value as $\frac{1}{N}$, and emits the page title as key and the initial PageRank value followed by the graph structure as output value;
+    \texttt{n1} $0.2$ \texttt{n3]]n4};
+    \item \texttt{PageRankMapper.java}: this Mapper is used by \texttt{job2}; the \texttt{map()} method is called once for each of the lines of the output generated by \texttt{job1}; for each line, the outlinks are extracted and for each of them the incoming contributions are computed; each outlink and the received contribution is emitted as the Key-Value pair; additionally also the graph structure is emitted;
+    \item \texttt{PageRankReducer.java}: the \texttt{reduce()} method is called once for each outlink and sums the received contributions in order to be able to compute the new PageRank;
+    \item \texttt{SorterMapper.java}: parses the output produced by \texttt{job2} to remove outlinks and emit the page title as key and the PageRank as value; title and PageRank are switched in this case in order to be able to apply the MapReduce sorting process;
+    \item \texttt{SorterReducer.java}: it emits the list of pairs \texttt{<key,value>} in descending order;
+    \item \texttt{DescendingDoubleWritableComparator.java}: this class implements the WritableComparator used to sort in descending order the output generated by SorterReducer.
+\end{itemize}
 \section{PageRank Implementation using Spark}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquam justo eget nunc condimentum, eget iaculis justo venenatis. Aenean id tellus at velit vestibulum tempor nec eu mi. Maecenas lobortis eu mi quis condimentum. Maecenas mi ipsum, semper at felis in, consequat lobortis lorem. Ut imperdiet, ante mattis interdum tristique, orci leo feugiat lorem, facilisis volutpat diam tortor ac quam. Integer faucibus, odio sed consequat sagittis, nunc mi aliquet turpis, ut laoreet velit dolor non nisi. Vivamus vitae libero a est feugiat iaculis ac id mauris.
 \subsection{Python}
@@ -148,4 +240,5 @@ n3      0.18333333333333335
 n2      0.13333333333333336
 n1      0.10000000000000002
 \end{lstlisting}
+\section{Future Work}
 \end{document}
