@@ -76,6 +76,7 @@ public class Driver
 			System.err.println("Input file not found.");
 			throw new IOException("Input file not found.");
 		}
+
 		// open and read from file
 		FSDataInputStream inputStream = fs.open(inFile);
 		String line = inputStream.readLine();

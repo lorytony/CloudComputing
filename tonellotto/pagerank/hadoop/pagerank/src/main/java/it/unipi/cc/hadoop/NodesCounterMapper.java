@@ -21,6 +21,8 @@ public class NodesCounterMapper extends Mapper<LongWritable, Text, Text, IntWrit
 {
 	private final Text outputKey = new Text("N");
 	private final IntWritable outputValue = new IntWritable();
+
+	// in-mapper combiner aggregator
 	private int intermediateSum = 0;
 
 	@Override
@@ -39,7 +41,8 @@ public class NodesCounterMapper extends Mapper<LongWritable, Text, Text, IntWrit
 	}
 
 	@Override
-	protected void cleanup(final Context context) throws IOException, InterruptedException {
+	protected void cleanup(final Context context) throws IOException, InterruptedException
+	{
 		outputValue.set(intermediateSum);
 		context.write(outputKey, outputValue);
 	}

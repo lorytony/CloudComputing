@@ -17,6 +17,7 @@ public class NodesCounterReducer extends Reducer<Text, IntWritable, Text, IntWri
 {
 	private final IntWritable outputValue = new IntWritable();
 
+	@Override
 	public void reduce(final Text key, final Iterable<IntWritable> values, final Context context) throws IOException, InterruptedException
 	{
 		int sum = 0;

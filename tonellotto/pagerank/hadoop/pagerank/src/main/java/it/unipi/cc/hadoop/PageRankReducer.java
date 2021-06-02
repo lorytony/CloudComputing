@@ -7,19 +7,23 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.conf.Configuration;
 
 /**
- *
+ * In the setup() method the values for N and alfa are retrieved from the Hadoop
+ * Job configuration. In the reduce() method the contributions are summed and a
+ * new PageRank value is computed.
+ * 
  * @author Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella, Rambod Rahmani.
  */
 public class PageRankReducer extends Reducer<Text, Text, Text, Text>
 {
 	private final Text outputValue = new Text();
-	private double alfa;
+	private double alpha;
 	private int N;
 
 	@Override
-	protected void setup(final Context context) throws IOException, InterruptedException {
+	protected void setup(final Context context) throws IOException, InterruptedException
+	{
 		final Configuration conf =  context.getConfiguration();
-		alfa = Double.parseDouble(conf.get("ALFA"));
+		alpha = Double.parseDouble(conf.get("ALFA"));
 		N = Integer.parseInt(conf.get("N"));
 	}
 
@@ -29,18 +33,20 @@ public class PageRankReducer extends Reducer<Text, Text, Text, Text>
 		double sum = 0.0;
 		String links = "";
 
+		// sum contributions
 		for (final Text value : values) {
 			final String valueString = value.toString();
 
 			if (valueString.startsWith("-structure-")) {
 				links = valueString.substring(11);
 			} else {
-				double p = Double.parseDouble(valueString);
-				sum += p;
+				double contribution = Double.parseDouble(valueString);
+				sum += contribution;
 			}
 		}
 
-		double pr = alfa*((double)1/N) + (1 - alfa)*sum;
+		// compute and emit new PageRank
+		double pr = alpha*((double)1/N) + (1 - alpha)*sum;
 		outputValue.set(pr + "\t" + links);
 		context.write(key, outputValue);
 	}

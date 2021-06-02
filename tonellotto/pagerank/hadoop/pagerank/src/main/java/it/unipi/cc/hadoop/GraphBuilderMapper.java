@@ -44,7 +44,6 @@ public class GraphBuilderMapper extends Mapper<LongWritable, Text, Text, Text>
 				int linkEnd = body.indexOf("]]", linkStart);
 				outputValue.set(body.substring(linkStart + 2, linkEnd));
 				linkStart = body.indexOf("[[", linkEnd + 1);
-
 				context.write(outputKey, outputValue);
 			}
 		}

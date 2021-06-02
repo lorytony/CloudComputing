@@ -8,6 +8,10 @@ import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.mapreduce.Mapper;
 
 /**
+ * Parses the Hyperlink Graph with the final PageRank values line by line. For
+ * each node, the title and the PageRank values are parsed. The PageRank is
+ * emitted as key while the title is emitted as value. This allows for exploiting
+ * the built-in shuffle and sort functionality. The outlinks are discarded.
  * 
  * @author Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella, Rambod Rahmani.
  */
