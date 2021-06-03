@@ -64,12 +64,12 @@ if __name__ == "__main__":
         # pageRanks = list(K, V), K=outlink, V=PageRank
         pageRanks = contributions.reduceByKey(add).mapValues(lambda sum: alfa*(1/float(broadcastN.value)) + (1 - alfa)*sum)
         missingNodes = graph.map(lambda node: (node[0], alfa*(1/float(broadcastN.value)))).subtractByKey(pageRanks)
-        finalPageRanks = pageRanks.union(missingNodes)
-        finalPageRanks.saveAsTextFile("spark-output-" + str(iteration))
+        pageRanks = pageRanks.union(missingNodes)
+        pageRanks.saveAsTextFile("spark-output-" + str(iteration))
 
     # order nodes with descending pagerank order
-    pageRanksList = finalPageRanks.takeOrdered(broadcastN.value, key=lambda x: -x[1])
-    pageRanksOrdered = finalPageRanks.sortBy(lambda a: -a[1])
+    pageRanksList = pageRanks.takeOrdered(broadcastN.value, key=lambda x: -x[1])
+    pageRanksOrdered = pageRanks.sortBy(lambda a: -a[1])
 
     # print the final page ranks
     for (link, rank) in pageRanksList:
