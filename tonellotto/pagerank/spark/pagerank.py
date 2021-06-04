@@ -9,15 +9,19 @@ __license__ = "GPLv3"
 
 def parseLine(line):
     """
-    COMMENT ME
+        Called once for each line of the input .xml file.
+        Parses the <title></title> and <text>[[]]</text> tags
+        to retrieve the page title and the outlinks.
     """
-    title =  re.findall(r'<title>(.*?)</title>', line)
-    outlinks =  re.findall(r'\[\[([^]]*)\]\]', line)
+    title = re.findall(r'<title>(.*?)</title>', line)
+    text = re.findall(r'<text.*>(.*?)</text>', line)
+    outlinks =  re.findall(r'\[\[([^]]*)\]\]', text[0])
     return title[0], outlinks
 
 def countContributions(outlinks, pageRank):
     """
-    COMMENT ME
+        Computes the size of the given outlinks list and
+        returns the contribution to each outlink.
     """
     count = len(outlinks)
     for link in outlinks:
@@ -29,22 +33,24 @@ if __name__ == "__main__":
     alfa = float(sys.argv[2])
     inputFile = sys.argv[3]
 
-    # connect to the Spark cluster
+    # connect to the Hadoop cluster
     master = "yarn"
     sc = SparkContext(master, "PageRank")
 
     # create input file RDD
     inputRDD = sc.textFile(inputFile)
 
-    # count the number of rows in the input RDD (nodes)
-    N = inputRDD.count()
-
-    # broadcast number of nodes to the workers
-    broadcastN = sc.broadcast(N)
-
     # build hyperlink graph: graph = list(K, V), K=title[0], V=[outlinks]
     graph = inputRDD.map(lambda line: parseLine(line))
-    graph.saveAsTextFile("initial-graph")
+
+    # remove dangling nodes
+    graph = graph.filter(lambda node: len(node[1]) >= 1).cache()
+
+    # count the number of rows in the input RDD (nodes)
+    N = graph.count()
+
+    # broadcast the number of nodes to the workers
+    broadcastN = sc.broadcast(N)
 
     # compute initial pageranks
     # pageRanks = list(K, V), K=title, V=initialPageRank
@@ -52,26 +58,27 @@ if __name__ == "__main__":
 
     # compute pageRank iteratively
     for iteration in range(iterations):
-        # graph = list(K, V), K=title[0], V=[[outlinks], initialPageRank]
+        # completeGraph = list(K, V), K=title, V=[[outlinks], initialPageRank]
         completeGraph = graph.join(pageRanks)
-        completeGraph.saveAsTextFile("completeGraph" + str(iteration))
 
-        # contributions = list(K, V)
+        # contributions = list(K, V), K=outlink, V=contribution
         contributions = completeGraph.flatMap(lambda token: countContributions(token[1][0], token[1][1]))
-        contributions.saveAsTextFile("contributions" + str(iteration))
-        pageRanks = contributions.reduceByKey(add).mapValues(lambda r: alfa*(1/float(broadcastN.value)) + (1 - alfa)*r)
-        pageRanks.saveAsTextFile("result-" + str(iteration))
+
+        # compute new PageRank value
+        # pageRanks = list(K, V), K=outlink, V=PageRank
+        pageRanks = contributions.reduceByKey(add).mapValues(lambda sum: alfa*(1/float(broadcastN.value)) + (1 - alfa)*sum)
+        missingNodes = graph.map(lambda node: (node[0], alfa*(1/float(broadcastN.value)))).subtractByKey(pageRanks)
+        pageRanks = pageRanks.union(missingNodes)
+
+    # retrieve original graph structure
+    filteredPageRanks = graph.join(pageRanks)
+    filteredPageRanks = filteredPageRanks.map(lambda node: (node[0], node[1][1]))
 
     # order nodes with descending pagerank order
-    pageRanksList = pageRanks.takeOrdered(broadcastN.value, key=lambda x: -x[1])
-    pageRanksOrdered = pageRanks.sortBy(lambda a: -a[1])
-
-    # print the final page ranks
-    for (link, rank) in pageRanksList:
-        print("Page: %s Rank: %s" % (link, rank))
+    pageRanksOrdered = filteredPageRanks.sortBy(lambda a: -a[1])
 
     # save ordered pagerank results as text file
-    pageRanksOrdered.saveAsTextFile("result-final")
+    pageRanksOrdered.saveAsTextFile("spark-output-sorted")
 
     # stop spark context
     sc.stop()

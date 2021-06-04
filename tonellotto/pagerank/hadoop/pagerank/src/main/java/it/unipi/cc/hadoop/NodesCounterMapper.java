@@ -35,7 +35,19 @@ public class NodesCounterMapper extends Mapper<LongWritable, Text, Text, IntWrit
 		if (titleStart >= 0) {
 			int titleEnd = page.indexOf("</title>", titleStart);
 			if (titleEnd >= 0) {
-				intermediateSum += 1;
+				// find and extract <text></text> tag
+				final int textStartOpen = page.indexOf("<text");
+				final int textStartClose = page.indexOf(">", textStartOpen);
+				final int textEnd = page.indexOf("</text>", textStartClose);
+				final String body = page.substring(textStartClose + 1, textEnd);
+
+				// search for links [[]] inside <text></text>
+				int linkStart = body.indexOf("[[");
+
+				// check dangling node
+				if (linkStart >= 0) {
+					intermediateSum += 1;
+				}
 			}
 		}
 	}

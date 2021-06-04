@@ -29,8 +29,11 @@ public class SorterMapper extends Mapper<LongWritable, Text, DoubleWritable, Tex
 		final String title = tokens[0];
 		final String pr = tokens[1];
 
-		outputKey.set(Double.parseDouble(pr));
-		outputValue.set(title);
-		context.write(outputKey, outputValue);
+		// dangling node check
+		if (tokens.length > 2) {
+			outputKey.set(Double.parseDouble(pr));
+			outputValue.set(title);
+			context.write(outputKey, outputValue);
+		}
 	}
 }
