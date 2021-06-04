@@ -52,12 +52,6 @@ if __name__ == "__main__":
     # broadcast the number of nodes to the workers
     broadcastN = sc.broadcast(N)
 
-<<<<<<< HEAD
-=======
-    # build hyperlink graph: graph = list(K, V), K=title[0], V=[outlinks]
-    graph = inputRDD.map(lambda line: parseLine(line))
-
->>>>>>> c49445c746e9e357e86d5deb19ead51d82d32c8a
     # compute initial pageranks
     # pageRanks = list(K, V), K=title, V=initialPageRank
     pageRanks = graph.map(lambda node: (node[0], 1/float(broadcastN.value)))
@@ -69,16 +63,6 @@ if __name__ == "__main__":
 
         # contributions = list(K, V), K=outlink, V=contribution
         contributions = completeGraph.flatMap(lambda token: countContributions(token[1][0], token[1][1]))
-<<<<<<< HEAD
-=======
-
-        # compute new PageRank value
-        # pageRanks = list(K, V), K=outlink, V=PageRank
-        pageRanks = contributions.reduceByKey(add).mapValues(lambda sum: alfa*(1/float(broadcastN.value)) + (1 - alfa)*sum)
-        missingNodes = graph.map(lambda node: (node[0], alfa*(1/float(broadcastN.value)))).subtractByKey(pageRanks)
-        pageRanks = pageRanks.union(missingNodes)
-        pageRanks.saveAsTextFile("spark-output-" + str(iteration))
->>>>>>> c49445c746e9e357e86d5deb19ead51d82d32c8a
 
         # compute new PageRank value
         # pageRanks = list(K, V), K=outlink, V=PageRank
