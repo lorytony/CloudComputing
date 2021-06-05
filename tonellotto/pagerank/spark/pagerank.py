@@ -64,13 +64,14 @@ if __name__ == "__main__":
         # contributions = list(K, V), K=outlink, V=contribution
         contributions = completeGraph.flatMap(lambda token: countContributions(token[1][0], token[1][1]))
 
-        # compute new PageRank value
-        # pageRanks = list(K, V), K=outlink, V=PageRank
-        pageRanks = contributions.reduceByKey(add).mapValues(lambda sum: alfa*(1/float(broadcastN.value)) + (1 - alfa)*sum)
-        missingNodes = graph.map(lambda node: (node[0], alfa*(1/float(broadcastN.value)))).subtractByKey(pageRanks)
-        pageRanks = pageRanks.union(missingNodes)
+        # compute new PageRank value, pageRanks = list(K, V), K=outlink, V=PageRank
+        pageRanks = contributions.reduceByKey(add, 10).mapValues(lambda sum: alfa*(1/float(broadcastN.value)) + (1 - alfa)*sum)
 
-    # retrieve original graph structure
+        # handle disconnected nodes in the hyperlink graph
+        disconnectedNodes = graph.map(lambda node: (node[0], alfa*(1/float(broadcastN.value)))).subtractByKey(pageRanks)
+        pageRanks = pageRanks.union(disconnectedNodes)
+
+    # retrieve graph structure: no dangling nodes admitted
     filteredPageRanks = graph.join(pageRanks)
     filteredPageRanks = filteredPageRanks.map(lambda node: (node[0], node[1][1]))
 
@@ -78,7 +79,7 @@ if __name__ == "__main__":
     pageRanksOrdered = filteredPageRanks.sortBy(lambda a: -a[1])
 
     # save ordered pagerank results as text file
-    pageRanksOrdered.saveAsTextFile("spark-output-sorted")
+    pageRanksOrdered.coalesce(10, True).saveAsTextFile("spark-output")
 
     # stop spark context
     sc.stop()

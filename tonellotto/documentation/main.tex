@@ -84,7 +84,7 @@ nowadays a colossal $4.2$ billion pages exist on the Web, spread across $8.2$ mi
 \end{lstlisting}
 The pages have been "flattened" to be represented on a single line. The body text of the page also has all newlines converted to spaces to ensure it stays on one line in this representation. This makes it easy to use the default \texttt{InputFormat}, which performs one \texttt{map()} call per line of each file it reads. Links to other Wikipedia articles are of the form \texttt{[[page name]]}. Starting from this input file, first the hyperlink graph is constructed and then the PageRank is computed for each node.\\
 \\
-The second assumption was related to how \textit{dangling nodes} should be handled. Dangling nodes are pages that do not have any out-links: our random surfer will get stuck on these pages, and  the importance received by these pages cannot be propagated. VENGONO RIMOSSI.\\
+The second assumption was related to how \textit{dangling nodes} should be handled. Dangling nodes are pages that do not have any out-links: our random surfer will get stuck on these pages, and  the importance received by these pages cannot be propagated. In the original PageRank publication by Larry Page and Sergey Brin, it is said that "\textit{Because dangling links do not affect the ranking of any other page directly, we simply remove them from the system until all the PageRank values are calculated. After all PageRank values are calculated, they can be added back in, without affecting things significantly. Notice the normalization of the other links on the same page as a link which was removed will change slightly, but this should not have a large effect.}". The decision was made to remove dangling nodes: they will not be visible in the links output as well.\\
 \\
 The "jump factor" $\alpha$ and the number of iterations to be performed are expected as inputs. As a matter of fact, the proposed implementation does not rely upon the iterations convergence measured as the difference between consecutive PageRank values as stopping criteria. But instead a fixed number of iterations are performed.
 \subsection{Pseudocode Implementation}
@@ -205,12 +205,227 @@ The Java implementation consists of the following classes:
 \end{itemize}
 \section{PageRank Implementation using Spark}
 The PageRank implementation using Spark was written using Python.
+\begin{lstlisting}[language=python,numbers=left,basicstyle=\tiny]
+import re
+import sys
+from operator import add
+from pyspark import SparkContext
+
+_author__ = "Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella and Rambod Rahmani"
+__copyright__ = "Copyright (C) 2021 Leonardo Turchetti, Lorenzo Tunelli, Ludovica Cocchella and Rambod Rahmani"
+__license__ = "GPLv3"
+
+def parseLine(line):
+    """
+        Called once for each line of the input .xml file.
+        Parses the <title></title> and <text>[[]]</text> tags
+        to retrieve the page title and the outlinks.
+    """
+    title = re.findall(r'<title>(.*?)</title>', line)
+    text = re.findall(r'<text.*>(.*?)</text>', line)
+    outlinks =  re.findall(r'\[\[([^]]*)\]\]', text[0])
+    return title[0], outlinks
+
+def countContributions(outlinks, pageRank):
+    """
+        Computes the size of the given outlinks list and
+        returns the contribution to each outlink.
+    """
+    count = len(outlinks)
+    for link in outlinks:
+        yield(link, pageRank/count)
+
+if __name__ == "__main__":
+    # parse command line arguments
+    iterations = int(sys.argv[1])
+    alfa = float(sys.argv[2])
+    inputFile = sys.argv[3]
+
+    # connect to the Hadoop cluster
+    master = "yarn"
+    sc = SparkContext(master, "PageRank")
+
+    # create input file RDD
+    inputRDD = sc.textFile(inputFile)
+
+    # build hyperlink graph: graph = list(K, V), K=title[0], V=[outlinks]
+    graph = inputRDD.map(lambda line: parseLine(line))
+
+    # remove dangling nodes
+    graph = graph.filter(lambda node: len(node[1]) >= 1).cache()
+
+    # count the number of rows in the input RDD (nodes)
+    N = graph.count()
+
+    # broadcast the number of nodes to the workers
+    broadcastN = sc.broadcast(N)
+
+    # compute initial pageranks
+    # pageRanks = list(K, V), K=title, V=initialPageRank
+    pageRanks = graph.map(lambda node: (node[0], 1/float(broadcastN.value)))
+
+    # compute pageRank iteratively
+    for iteration in range(iterations):
+        # completeGraph = list(K, V), K=title, V=[[outlinks], initialPageRank]
+        completeGraph = graph.join(pageRanks)
+
+        # contributions = list(K, V), K=outlink, V=contribution
+        contributions = completeGraph.flatMap(lambda token: countContributions(token[1][0], token[1][1]))
+
+        # compute new PageRank value, pageRanks = list(K, V), K=outlink, V=PageRank
+        pageRanks = contributions.reduceByKey(add, 10).mapValues(lambda sum: alfa*(1/float(broadcastN.value)) + (1 - alfa)*sum)
+
+        # handle disconnected nodes in the hyperlink graph
+        disconnectedNodes = graph.map(lambda node: (node[0], alfa*(1/float(broadcastN.value)))).subtractByKey(pageRanks)
+        pageRanks = pageRanks.union(disconnectedNodes)
+
+    # retrieve graph structure: no dangling nodes admitted
+    filteredPageRanks = graph.join(pageRanks)
+    filteredPageRanks = filteredPageRanks.map(lambda node: (node[0], node[1][1]))
+
+    # order nodes with descending pagerank order
+    pageRanksOrdered = filteredPageRanks.sortBy(lambda a: -a[1])
+
+    # save ordered pagerank results as text file
+    pageRanksOrdered.coalesce(10, True).saveAsTextFile("spark-output")
+
+    # stop spark context
+    sc.stop()
+\end{lstlisting}
+The lines we think need additional comments are $70$ - $72$: this is how we handle disconnect components in the graph. Because these links are not directly linked by any other node in the hyperlink graph, they are removed on line $68$ when contributions are computed (they do not receive contributions). After all the PageRanks are calculated, they can be added back in without affecting things: they preserve their initial PageRank computation.\\
+\\
+Also, on line $75$ we are basically removing all those nodes generated when computing contributions. At the very beginning, the assumption was made that the hyperlink graph nodes were only those pages found within the \texttt{<title></title>}: this assumption was kept throughout both the Java (Hadoop) and Python (Spark) implementations.\\
+\\
+Finally, on lines $68$ and $82$ the number of tasks to be used and the number of final partitions is forced to $10$: this was done because the number of tasks/partitions obtained on the synthetic dataset reached value $59$, while on the real world dataset even more than $8000$ tasks/partitions were created. Too many tasks/partitions will generate excessive overhead in managing many small tasks. The value $10$ was considered to be a good trade-off between computation parallelization and overhead.\\
+\\
+On the \texttt{namenode} machine, the Spark implementation can be executed simply by running:
+\begin{lstlisting}[basicstyle=\scriptsize]
+hadoop@namenode:$ cd PageRank/spark/
+hadoop@namenode:/PageRank/spark$ spark-submit pagerank.py 3 0.15 UltimateTest.txt
+\end{lstlisting}
 \section{Validation}
-Validation was performed on a test dataset containing a sample hyperlink graph with  dangling nodes and disconnected graph components as well.\\
+Validation was performed using both a synthetic and a real word dataset.
+\subsection{Synthetic dataset}
+Validation was performed on a test dataset containing a sample hyperlink graph with  dangling nodes and disconnected graph components as well.
+\begin{lstlisting}[language=xml,basicstyle=\scriptsize]
+<title>n1</title><revision><text> content [[n2]],[[n4]] </text></revision>
+<title>n2</title><revision><text>[[n3]],[[n5]] </text></revision>
+<title>n3</title><revision><text attr="val">[[n4]] content </text></revision>
+<title>n4</title><revision><text>[[n5]] content [[n8]] </text></revision>
+<title>n5</title><revision><text attr="val">[[n1]],[[n2]],[[n3]] </text></revision>
+<title>n6</title><revision><text attr="val"> content [[n7]] </text></revision>
+<title>n8</title><revision><text attr="val"> content</text></revision>
+\end{lstlisting}
+As we can see, node \texttt{n6} is what in literature is commonly referred to as \textit{disconnected component}, while node \texttt{n7} and node \texttt{n8} are examples of \textit{dangling nodes}.\\
 \\
-SAMPLE INPUT TEXT FILE\\
+The following pictures display $3$ iterations of the PageRank algorithm performed manually (pen, paper and calculator) on the synthetic dataset with $\alpha = 0.15$. Underneath each iteration, also our implementation output is reported:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.35]{imgs/initial.jpg}
+\end{figure}
+\begin{lstlisting}[language=bash,title={Initial PageRank}]
+('n1', 0.16666666666666666)
+('n2', 0.16666666666666666)
+('n3', 0.16666666666666666)
+('n4', 0.16666666666666666)
+('n5', 0.16666666666666666)
+('n6', 0.16666666666666666)
+\end{lstlisting}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.26]{imgs/iteration-1.jpg}
+\end{figure}
+\begin{minipage}{.45\textwidth}
+\begin{lstlisting}[language=bash,title={Contributions}]
+('n2', 0.08333333333333333)
+('n4', 0.08333333333333333)
+('n1', 0.05555555555555555)
+('n2', 0.05555555555555555)
+('n3', 0.05555555555555555)
+('n7', 0.16666666666666666)
+('n5', 0.08333333333333333)
+('n8', 0.08333333333333333)
+('n3', 0.08333333333333333)
+('n5', 0.08333333333333333)
+('n4', 0.16666666666666666)
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
+\begin{lstlisting}[language=bash,title={New PageRanks}]
+('n5', 0.16666666666666666)
+('n8', 0.09583333333333333)
+('n1', 0.07222222222222222)
+('n4', 0.2375)
+('n2', 0.14305555555555555)
+('n3', 0.14305555555555555)
+('n7', 0.16666666666666666)
+('n6', 0.024999999999999998)
+\end{lstlisting}
+\end{minipage}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.26]{imgs/iteration-2.jpg}
+\end{figure}
+\begin{minipage}{.45\textwidth}
+\begin{lstlisting}[language=bash,title={Contributions}]
+('n7', 0.024999999999999998)
+('n3', 0.07152777777777777)
+('n5', 0.07152777777777777)
+('n1', 0.05555555555555555)
+('n2', 0.05555555555555555)
+('n3', 0.05555555555555555)
+('n5', 0.11875)
+('n8', 0.11875)
+('n4', 0.14305555555555555)
+('n2', 0.03611111111111111)
+('n4', 0.03611111111111111)
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
+\begin{lstlisting}[language=bash,title={New PageRanks}]
+('n8', 0.1259375)
+('n7', 0.04625)
+('n2', 0.10291666666666666)
+('n5', 0.1867361111111111)
+('n4', 0.17729166666666663)
+('n3', 0.13302083333333334)
+('n1', 0.07222222222222222)
+('n6', 0.024999999999999998)
+\end{lstlisting}
+\end{minipage}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.26]{imgs/iteration-3.jpg}
+\end{figure}
+\begin{minipage}{.45\textwidth}
+\begin{lstlisting}[language=bash,title={Contributions}]
+('n5', 0.08864583333333331)
+('n8', 0.08864583333333331)
+('n2', 0.03611111111111111)
+('n4', 0.03611111111111111)
+('n4', 0.13302083333333334)
+('n1', 0.06224537037037037)
+('n2', 0.06224537037037037)
+('n3', 0.06224537037037037)
+('n3', 0.05145833333333333)
+('n5', 0.05145833333333333)
+('n7', 0.024999999999999998)
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
+\begin{lstlisting}[language=bash,title={New PageRanks}]
+('n4', 0.16876215277777779)
+('n7', 0.04625)
+('n8', 0.10034895833333331)
+('n1', 0.07790856481481481)
+('n3', 0.12164814814814813)
+('n5', 0.14408854166666665)
+('n2', 0.10860300925925924)
+('n6', 0.024999999999999998)
+\end{lstlisting}
+\end{minipage}\\
 \\
-As we can see, node \texttt{n6} is what in literature is commonly referred to as \textit{disconnected component}, while node \texttt{n7} is an example of a \textit{dangling node}.\\
-\\
-Once the implementation and debugging stage was concluded, the first and foremost validation we performed consisted in comparing the PageRank computation results produced by the Hadoop and Spark implementations. Having obtained the same exact output on a synthetic test dataset is by no means a rigorous validation, however it was a beginning.
+Once both implementations and the debugging stage was concluded, the first and foremost validation we performed consisted in comparing the PageRank computation results produced by the Hadoop and Spark implementations. Having obtained the same exact output on this synthetic test dataset is by no means a rigorous validation, however it is a beginning.
+\subsection{\texttt{wiki-micro.txt} dataset}
+Finally both implementations were executed on the given \texttt{wiki-micro.txt} real world dataset. This allowed for observing the convergence of the PageRank computation. In an execution with $10$ iterations on a hyperlink graph made up of $2282$ nodes, convergence was reached after a few iterations. This is consistent with what found in the original PageRank paper: "\textit{on a $322$ million link database convergence to a reasonable tolerance in obtained in roughly $52$ iterations}".
 \end{document}
