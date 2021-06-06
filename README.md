@@ -12,3 +12,8 @@ visualize the data and extract useful statistics.
 ![Grafana Dashboard](vallati/documentation/imgs/grafana-dashboard.jpg)
 
 # PageRank
+The importance of a web page is an inherently subjective matter, which depends on the readers interests, knowledge and attitudes. PageRank can be defined as a method for rating web pages objectively and mechanically, effectively measuring the human interest and attention devoted to them. In order to measure the relative importance of web pages, PageRank was proposed as a method for computing a ranking for every web page based on the graph of the web.
+
+The project focused on designing a MapReduce algorithm (using pseudocode) to implement the PageRank (using both Hadoop and Spark). Initially, a pseudocode implementation and the design assumptions are presented. The successive sections focus on the implementation details using both Hadoop and Spark. Finally, the validation results obtained using both a realistic and a synthetic dataset are provided.
+
+![PageRank Iteration](tonellotto/documentation/imgs/iteration-1.jpg)
