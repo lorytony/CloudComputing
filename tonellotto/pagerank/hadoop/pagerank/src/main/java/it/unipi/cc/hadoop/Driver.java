@@ -106,7 +106,7 @@ public class Driver
 		job1.waitForCompletion(true);
 
 		for (int i = 0; i < iterations; i++) {
-			// job2: builds the graph starting from the .xml input file
+			// job2: iteratively compute pagerank
 			final Job job2 = Job.getInstance(conf, "PageRank-PageRank");
 			job2.setJarByClass(Driver.class);
 			job2.setMapperClass(PageRankMapper.class);
@@ -127,7 +127,7 @@ public class Driver
 			job2.waitForCompletion(true);
 		}
 
-		// job3: builds the graph starting from the .xml input file
+		// job3: sort pagerank values
 		final Job job3 = Job.getInstance(conf, "PageRank-Sorter");
 		job3.setJarByClass(Driver.class);
 		job3.setMapperClass(SorterMapper.class);

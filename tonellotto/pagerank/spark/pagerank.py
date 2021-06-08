@@ -4,7 +4,7 @@ from operator import add
 from pyspark import SparkContext
 
 _author__ = "Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella and Rambod Rahmani"
-__copyright__ = "Copyright (C) 2021 Leonardo Turchetti, Lorenzo Tunelli, Ludovica Cocchella and Rambod Rahmani"
+__copyright__ = "Copyright (C) 2021 Leonardo Turchetti, Lorenzo Tonelli, Ludovica Cocchella and Rambod Rahmani"
 __license__ = "GPLv3"
 
 def parseLine(line):
