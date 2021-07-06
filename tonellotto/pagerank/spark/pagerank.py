@@ -79,7 +79,7 @@ if __name__ == "__main__":
     pageRanksOrdered = filteredPageRanks.sortBy(lambda a: -a[1])
 
     # save ordered pagerank results as text file
-    pageRanksOrdered.coalesce(10, True).saveAsTextFile("spark-output")
+    pageRanksOrdered.saveAsTextFile("spark-output")
 
     # stop spark context
     sc.stop()
